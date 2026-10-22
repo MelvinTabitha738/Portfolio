@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Melvin Tabitha — Software Developer</title>
+  <meta name="description" content="Melvin Tabitha is a software developer in Kenya building full-stack web applications with Django, React and PostgreSQL: APIs, integrations and deployment, plus technical SEO for businesses.">
+  <link rel="canonical" href="https://melvintabitha.vercel.app/">
+  <meta name="theme-color" content="#0b0e13">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Melvin Tabitha — Software Developer">
+  <meta property="og:description" content="Full-stack web applications with Django, React and PostgreSQL, plus technical SEO. See the projects, read the case studies.">
+  <meta property="og:url" content="https://melvintabitha.vercel.app/">
+  <meta property="og:image" content="https://melvintabitha.vercel.app/assets/img/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preload" href="assets/fonts/manrope-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/jetbrains-mono-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/main.css?v=10">
+  <script>document.documentElement.classList.replace("no-js","js");</script>
+  <script>
+    /* Apply the chosen theme before paint so the page never flashes the wrong
+       colours. Reads the visitor's saved choice, then falls back to their OS
+       preference, then to dark. Mirrored on every page in this site. */
+    (function () {
+      var theme = "dark";
+      try {
+        var saved = localStorage.getItem("melvin.theme");
+        theme = saved || (
+          window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches
+            ? "light"
+            : "dark"
+        );
+      } catch (e) {}
+      document.documentElement.setAttribute("data-theme", theme);
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute("content", theme === "light" ? "#f8f7f4" : "#0b0e13");
+    })();
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Melvin Tabitha",
+    "jobTitle": "Software Developer",
+    "email": "mailto:melvintabitha26@gmail.com",
+    "url": "https://melvintabitha.vercel.app/",
+    "address": { "@type": "PostalAddress", "addressCountry": "KE" },
+    "sameAs": [
+      "https://github.com/MelvinTabitha738",
+      "https://www.linkedin.com/in/melvin-tabitha-5abb782a2/",
+      "https://instagram.com/tabitha_can_do"
+    ],
+    "knowsAbout": ["Software development", "Django", "React", "PostgreSQL", "REST APIs", "Technical SEO"]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="wordmark" href="index.html"><span class="tilde">~/</span>melvin-tabitha</a>
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light mode" title="Switch to light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+<button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <a href="#work">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#cv">CV</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ================= Hero ================= -->
+    <section class="hero" aria-label="Introduction">
+      <div class="code-rain" aria-hidden="true">
+        <div class="code-rain-col code-rain-col-1"><pre>// anga/js/weather.js
+const CACHE_TTL = 15 * 60 * 1000;
+const keys = loadKeys();
+
+async function fetchWeather(lat, lon) {
+  const hit = await cache.get(key(lat, lon));
+  if (hit && !isStale(hit)) return hit;
+
+  const apiKey = keys.pick(usage);
+  const url = `${API}?lat=${lat}&lon=${lon}&key=${apiKey}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    if (res.status === 429) rotateKey();
+    throw new WeatherError(res.status);
+  }
+
+  const data = await res.json();
+  await cache.set(key(lat, lon), data, CACHE_TTL);
+  usage.increment(apiKey);
+  return data;
+}
+
+function pickKey(usage) {
+  return keys
+    .filter(k =&gt; usage.get(k) &lt; QUOTA)
+    .sort((a, b) =&gt; usage.get(a) - usage.get(b))[0];
+}
+
+export { fetchWeather, pickKey };
+// anga/js/weather.js
+const CACHE_TTL = 15 * 60 * 1000;
+const keys = loadKeys();
+
+async function fetchWeather(lat, lon) {
+  const hit = await cache.get(key(lat, lon));
+  if (hit && !isStale(hit)) return hit;
+
+  const apiKey = keys.pick(usage);
+  const url = `${API}?lat=${lat}&lon=${lon}&key=${apiKey}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    if (res.status === 429) rotateKey();
+    throw new WeatherError(res.status);
+  }
+
+  const data = await res.json();
+  await cache.set(key(lat, lon), data, CACHE_TTL);
+  usage.increment(apiKey);
+  return data;
+}
+
+function pickKey(usage) {
+  return keys
+    .filter(k =&gt; usage.get(k) &lt; QUOTA)
+    .sort((a, b) =&gt; usage.get(a) - usage.get(b))[0];
+}
+
+export { fetchWeather, pickKey };</pre></div>
+        <div class="code-rain-col code-rain-col-2"><pre># studybuddy/tutor/views.py
+from django.views.decorators.http import require_POST
+from .retriever import retrieve_passages
+from .llm import call_llm, verify_citations
+
+@require_POST
+@login_required
+def ask_tutor(request):
+    q = request.POST.get("question", "").strip()
+    if not q:
+        return JsonResponse(
+            {"error": "empty_question"}, status=400
+        )
+
+    notes = Note.objects.filter(owner=request.user)
+    passages = retrieve_passages(q, notes, k=4)
+
+    answer, cites = call_llm(q, passages)
+    if not verify_citations(answer, cites):
+        return JsonResponse({
+            "answer": "I could not find that in your notes.",
+            "citations": [],
+            "confidence": "low",
+        })
+
+    return JsonResponse({
+        "answer": answer,
+        "citations": [c.id for c in cites],
+        "confidence": "high",
+    })
+# studybuddy/tutor/views.py
+from django.views.decorators.http import require_POST
+from .retriever import retrieve_passages
+from .llm import call_llm, verify_citations
+
+@require_POST
+@login_required
+def ask_tutor(request):
+    q = request.POST.get("question", "").strip()
+    if not q:
+        return JsonResponse(
+            {"error": "empty_question"}, status=400
+        )
+
+    notes = Note.objects.filter(owner=request.user)
+    passages = retrieve_passages(q, notes, k=4)
+
+    answer, cites = call_llm(q, passages)
+    if not verify_citations(answer, cites):
+        return JsonResponse({
+            "answer": "I could not find that in your notes.",
+            "citations": [],
+            "confidence": "low",
+        })
+
+    return JsonResponse({
+        "answer": answer,
+        "citations": [c.id for c in cites],
+        "confidence": "high",
+    })</pre></div>
+        <div class="code-rain-col code-rain-col-3"><pre>// portfolio/js/terminal.js
+const commands = {
+  whoami: {
+    summary: "print identity",
+    run() {
+      return "melvin · software developer";
+    },
+  },
+  theme: {
+    summary: "toggle color scheme",
+    run(args) {
+      const next = args[0] || cycle(current());
+      const root = document.documentElement;
+      root.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("melvin.theme", next);
+      } catch (e) {}
+      syncMeta(next);
+      syncToggleButton(next);
+      return `theme → ${next}`;
+    },
+  },
+  projects: {
+    summary: "list case studies",
+    run() {
+      return PROJECTS
+        .map(p =&gt; `  ${p.slug.padEnd(16)} ${p.title}`)
+        .join("\n");
+    },
+  },
+};
+
+export function dispatch(line) {
+  const [name, ...args] = tokenize(line);
+  const handler = commands[name];
+  if (!handler) return `command not found: ${name}`;
+  return handler.run(args);
+}
+// portfolio/js/terminal.js
+const commands = {
+  whoami: {
+    summary: "print identity",
+    run() {
+      return "melvin · software developer";
+    },
+  },
+  theme: {
+    summary: "toggle color scheme",
+    run(args) {
+      const next = args[0] || cycle(current());
+      const root = document.documentElement;
+      root.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("melvin.theme", next);
+      } catch (e) {}
+      syncMeta(next);
+      syncToggleButton(next);
+      return `theme → ${next}`;
+    },
+  },
+  projects: {
+    summary: "list case studies",
+    run() {
+      return PROJECTS
+        .map(p =&gt; `  ${p.slug.padEnd(16)} ${p.title}`)
+        .join("\n");
+    },
+  },
+};
+
+export function dispatch(line) {
+  const [name, ...args] = tokenize(line);
+  const handler = commands[name];
+  if (!handler) return `command not found: ${name}`;
+  return handler.run(args);
+}</pre></div>
+      </div>
+      <div class="container">
+        <div>
+          <p class="hero-kicker">$ whoami</p>
+          <h1>Melvin Tabitha</h1>
+          <p class="role-line" aria-label="Role">
+            <span class="role-tag" id="role-tag">identity</span>
+            <span class="role-arrow" aria-hidden="true">▸</span>
+            <span class="role-text" id="role-text" aria-live="polite">Software Developer</span><span class="role-cursor" aria-hidden="true"></span>
+          </p>
+          <p class="strap">I build web applications <strong>end&nbsp;to&nbsp;end</strong>: APIs, databases, frontends and the deployment behind them.</p>
+          <p class="lede">
+            From a Django service that stretches a 1,000-requests-a-month API quota into a
+            reliable product, to an AI study tool that verifies its own output against the
+            source notes. I care about software that holds up under real constraints.
+            I also help businesses get found, with technical SEO built in from the start.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="#work">Explore my work</a>
+            <a class="btn btn-ghost" href="#cv">View my CV</a>
+            <a class="btn btn-ghost" href="#contact">Let’s connect</a>
+          </div>
+        </div>
+
+        <aside class="fact-card" aria-label="Quick facts">
+          <div class="bar" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="title">melvin@portfolio: ~</span>
+          </div>
+          <dl>
+            <dt>role</dt><dd>software developer</dd>
+            <dt>backend</dt><dd>django · flask · rest apis</dd>
+            <dt>frontend</dt><dd>react · javascript · css</dd>
+            <dt>data</dt><dd>postgresql · mysql · redis · sqlite</dd>
+            <dt>deploys_to</dt><dd>vercel · render · neon · oracle cloud</dd>
+            <dt>location</dt><dd>Kenya · UTC+3</dd>
+            <dt>live_apps</dt><dd><span class="ok">●</span> 6 in production</dd>
+            <dt>github</dt><dd><a href="https://github.com/MelvinTabitha738" rel="noopener">MelvinTabitha738</a></dd>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================= Featured projects ================= -->
+    <section class="section" id="work" aria-label="Featured projects">
+      <div class="container">
+        <span class="eyebrow">~/projects</span>
+        <h2 class="section-title">Featured work</h2>
+        <p class="section-intro">
+          Real applications, deployed and verifiable. Every project links to its live app
+          and, where available, the source code. The two flagships have full engineering
+          case studies.
+        </p>
+
+        <!-- Anga Weather -->
+        <article class="project-feature reveal">
+          <div class="project-media">
+            <a href="https://anga-gules.vercel.app/" rel="noopener" aria-label="Open Anga Weather live app">
+              <img src="assets/img/projects/anga-weather.jpg" alt="Anga Weather dashboard showing current conditions and a 7-day forecast for a Kenyan town" width="1440" height="900" fetchpriority="high">
+            </a>
+          </div>
+          <div class="project-body">
+            <p class="project-kind">full-stack · django + react · case study</p>
+            <h3>Anga — Weather for Kenya</h3>
+            <p class="tagline">A weather dashboard engineered to survive a 1,000-requests-per-month API quota.</p>
+            <p class="desc">
+              The upstream provider allows roughly 33 calls a day, across every location. Anga puts a
+              Django service between users and the API: Redis caching with honest freshness labels,
+              request coalescing so concurrent misses cost one upstream call, a circuit breaker for
+              quota lockouts, and location search served from its own PostgreSQL gazetteer.
+            </p>
+            <p class="metric"><span class="mark">▸</span> Verified live: 30 simultaneous requests → exactly 1 upstream call. 222 automated tests.</p>
+            <ul class="chips">
+              <li>Django</li><li>DRF</li><li>Redis</li><li>PostgreSQL</li><li>React</li><li>Vite</li>
+            </ul>
+            <p class="project-links">
+              <a href="projects/anga-weather/index.html">Read the case study <span class="arrow">→</span></a>
+              <a href="https://anga-gules.vercel.app/" rel="noopener">Live <span class="arrow">↗</span></a>
+              <a href="https://github.com/MelvinTabitha738/Anga-weather" rel="noopener">Code <span class="arrow">↗</span></a>
+            </p>
+            <p class="project-note">Built as a take-home assessment for a software developer role at Weather AI.</p>
+          </div>
+        </article>
+
+        <!-- StudyBuddy -->
+        <article class="project-feature reveal">
+          <div class="project-media">
+            <a href="https://study-buddy-one-lovat.vercel.app/" rel="noopener" aria-label="Open StudyBuddy live app">
+              <img src="assets/img/projects/studybuddy.jpg" alt="StudyBuddy landing page: long lecture notes, made short and clear" width="1440" height="900" loading="lazy">
+            </a>
+          </div>
+          <div class="project-body">
+            <p class="project-kind">full-stack · ai integration · case study</p>
+            <h3>StudyBuddy</h3>
+            <p class="tagline">An AI study tool that summarizes only from the student’s own notes, and verifies that it did.</p>
+            <p class="desc">
+              Students upload notes as PDF, Word, text or a lecture recording and get summaries,
+              quizzes and flashcards grounded strictly in their material. Grounding is enforced
+              after generation: definitions must overlap the source and every quiz question must
+              quote an evidence sentence. Custom JWT auth, file-signature upload checks and a
+              quota-aware fallback chain across Gemini models.
+            </p>
+            <p class="metric"><span class="mark">▸</span> ~31 API endpoints and 14,600 lines of hand-written code across a Django API and React 19 frontend.</p>
+            <ul class="chips">
+              <li>Django</li><li>DRF</li><li>PostgreSQL</li><li>Gemini API</li><li>React 19</li><li>TanStack Start</li><li>Tailwind</li>
+            </ul>
+            <p class="project-links">
+              <a href="projects/studybuddy/index.html">Read the case study <span class="arrow">→</span></a>
+              <a href="https://study-buddy-one-lovat.vercel.app/" rel="noopener">Live <span class="arrow">↗</span></a>
+              <a href="https://github.com/MelvinTabitha738/study-buddy-ai" rel="noopener">Code <span class="arrow">↗</span></a>
+            </p>
+          </div>
+        </article>
+
+        <!-- Master Photography Kenya -->
+        <article class="project-feature reveal">
+          <div class="project-media">
+            <a href="https://master-photography-kenya.vercel.app/" rel="noopener" aria-label="Open Master Photography Kenya live site">
+              <img src="assets/img/projects/master-photography.jpg" alt="Master Photography Kenya homepage with a wedding photography hero image" width="1440" height="900" loading="lazy">
+            </a>
+          </div>
+          <div class="project-body">
+            <p class="project-kind">business website · performance + seo</p>
+            <h3>Master Photography Kenya</h3>
+            <p class="tagline">A studio website with zero third-party requests, generated by a custom Python build tool.</p>
+            <p class="desc">
+              Ten pages of hand-tuned HTML, CSS and JavaScript built for Kenyan mobile connections:
+              self-hosted fonts, structured data (ProfessionalService, FAQ, breadcrumbs), and an
+              enquiry form that validates Kenyan phone numbers and opens WhatsApp with the message
+              pre-written. A custom audit script gates every release: missing alt text, broken
+              links or invalid JSON-LD fail the build.
+            </p>
+            <p class="metric"><span class="mark">▸</span> No frameworks, no trackers, no third-party requests, and an automated quality gate.</p>
+            <ul class="chips">
+              <li>HTML</li><li>CSS</li><li>JavaScript</li><li>Python SSG</li><li>JSON-LD</li>
+            </ul>
+            <p class="project-links">
+              <a href="https://master-photography-kenya.vercel.app/" rel="noopener">Live <span class="arrow">↗</span></a>
+              <a href="https://github.com/MelvinTabitha738/MasterPhotographyKenya" rel="noopener">Code <span class="arrow">↗</span></a>
+            </p>
+            <p class="project-note">A complete build awaiting the studio’s real content; current imagery and pricing are clearly-tracked placeholders.</p>
+          </div>
+        </article>
+
+        <!-- UjamaaFlow -->
+        <article class="project-feature reveal">
+          <div class="project-media">
+            <a href="https://ujamaaflow-cock.onrender.com" rel="noopener" aria-label="Open UjamaaFlow live app">
+              <img src="assets/img/projects/ujamaaflow.jpg" alt="UjamaaFlow homepage: share resources, transform lives" width="1440" height="900" loading="lazy">
+            </a>
+          </div>
+          <div class="project-body">
+            <p class="project-kind">full product · flask</p>
+            <h3>UjamaaFlow</h3>
+            <p class="tagline">A donation platform connecting people giving items away with people who need them.</p>
+            <p class="desc">
+              Donors list items with photos and pickup details across six categories; recipients
+              browse and filter by category and location, then request what they need. A three-role
+              system (donor, recipient, admin) drives separate dashboards, admin matching, and a
+              moderation queue fed by community reports.
+            </p>
+            <ul class="chips">
+              <li>Flask</li><li>SQLAlchemy</li><li>Flask-Login</li><li>Jinja</li><li>SQLite</li>
+            </ul>
+            <p class="project-links">
+              <a href="https://ujamaaflow-cock.onrender.com" rel="noopener">Live <span class="arrow">↗</span></a>
+              <a href="https://github.com/MelvinTabitha738/UjamaaFlow" rel="noopener">Code <span class="arrow">↗</span></a>
+            </p>
+            <p class="project-note">An earlier full-product build, live as a demo; the public shell is complete while matching is admin-driven.</p>
+          </div>
+        </article>
+
+        <p style="margin-top:36px">
+          <a class="btn btn-ghost" href="projects/index.html">View all six projects <span class="arrow">→</span></a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= Skills ================= -->
+    <section class="section" id="skills" aria-label="Skills">
+      <div class="container">
+        <span class="eyebrow">~/skills</span>
+        <h2 class="section-title">What I work with</h2>
+        <p class="section-intro">Everything below is something I actively work with. Most of it is used in the live projects on this site; the rest comes from day-to-day engineering outside the portfolio.</p>
+        <div class="skills-grid">
+          <div class="skill-group reveal">
+            <h3>// languages</h3>
+            <ul>
+              <li><strong>Python</strong>: Django, DRF, Flask</li>
+              <li><strong>JavaScript / TypeScript</strong></li>
+              <li><strong>SQL</strong></li>
+              <li><strong>HTML &amp; CSS</strong>: semantic, accessible</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3>// backend</h3>
+            <ul>
+              <li><strong>REST API design</strong>: DRF, Flask</li>
+              <li><strong>Auth</strong>: JWT rotation, OAuth verification, Argon2</li>
+              <li><strong>Caching &amp; rate limiting</strong>: Redis, circuit breakers</li>
+              <li><strong>Payment integrations</strong>: M-Pesa Daraja API (STK Push), webhook verification</li>
+              <li><strong>PostgreSQL</strong>, MySQL, SQLite, SQLAlchemy &amp; Django ORM</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3>// frontend</h3>
+            <ul>
+              <li><strong>React</strong>: hooks, custom state, React 19</li>
+              <li><strong>Vite</strong>, TanStack Start / Router</li>
+              <li><strong>Tailwind CSS</strong> and hand-written CSS systems</li>
+              <li><strong>Accessibility</strong>: WCAG contrast, ARIA, reduced motion</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3>// ai integration</h3>
+            <ul>
+              <li><strong>Gemini &amp; Groq APIs</strong></li>
+              <li><strong>Grounded prompting</strong>: answers limited to supplied data</li>
+              <li><strong>Output verification</strong>: post-generation checks</li>
+              <li><strong>Quota-aware fallbacks</strong> across models</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3>// seo</h3>
+            <ul>
+              <li><strong>Technical SEO</strong>: metadata, sitemaps, canonicals</li>
+              <li><strong>Structured data</strong>: JSON-LD</li>
+              <li><strong>Performance</strong>: image strategy, zero-bloat builds</li>
+              <li><strong>Server-rendered content</strong> search engines can read</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3>// tooling &amp; deploys</h3>
+            <ul>
+              <li><strong>Git &amp; GitHub</strong></li>
+              <li><strong>Vercel, Render, Neon, Oracle Cloud</strong>: production deploys across free and paid tiers</li>
+              <li><strong>Testing &amp; API</strong>: Django test runner, Vitest, Postman</li>
+              <li><strong>Port forwarding</strong>: ngrok tunnels for exposing local dev endpoints to webhooks</li>
+              <li><strong>gunicorn, whitenoise</strong>, environment-driven config</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Services ================= -->
+    <section class="section" id="services" aria-label="Services">
+      <div class="container">
+        <span class="eyebrow">~/services</span>
+        <h2 class="section-title">How I can help</h2>
+        <p class="section-intro">For companies hiring developers, and for businesses that need to be built, or found, online.</p>
+        <div class="services-grid">
+          <div class="service reveal">
+            <p class="num">01</p>
+            <h3>Web application development</h3>
+            <p>
+              Full-stack applications: REST APIs, databases, auth, third-party integrations and
+              the frontend on top. Built to behave well under real constraints (quotas, free
+              tiers, slow networks), not just in the demo.
+            </p>
+            <p class="evidence"><a href="projects/anga-weather/index.html">Evidence: the Anga case study →</a></p>
+          </div>
+          <div class="service reveal">
+            <p class="num">02</p>
+            <h3>Business websites</h3>
+            <p>
+              Fast, professional websites for organisations and small businesses, built lean,
+              accessible and easy to maintain, with contact flows that match how Kenyan customers
+              actually reach out (WhatsApp included).
+            </p>
+            <p class="evidence"><a href="https://master-photography-kenya.vercel.app/" rel="noopener">Evidence: Master Photography Kenya ↗</a></p>
+          </div>
+          <div class="service reveal">
+            <p class="num">03</p>
+            <h3>Technical SEO</h3>
+            <p>
+              Making sure search engines can find, read and rank what you publish: site structure,
+              metadata, structured data, sitemaps and performance. No ranking promises, just the
+              engineering fundamentals done properly.
+            </p>
+            <p class="evidence"><a href="#contact">Ask about an SEO review →</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= About ================= -->
+    <section class="section" id="about" aria-label="About">
+      <div class="container">
+        <span class="eyebrow">~/about</span>
+        <h2 class="section-title">About me</h2>
+        <div class="about-grid">
+          <div class="about-copy">
+            <p>
+              I’m a software developer based in Kenya. I build web applications end to end:
+              the API, the data layer, the frontend and the deployment behind them. The parts of
+              engineering most people skip are the ones I enjoy most: <strong>what happens when
+              the quota runs out, the upstream API lies about its headers, or the user is on a
+              slow connection</strong>.
+            </p>
+            <p>
+              My habit is to verify rather than assume. For Anga I probed the provider’s live API
+              and found its documented rate-limit headers didn’t exist. That discovery shaped the
+              whole architecture. For StudyBuddy I didn’t trust the AI’s promises to stay grounded,
+              so the code checks every definition and quiz question against the source notes after
+              generation. If a reading is stale, the interface says so instead of pretending.
+            </p>
+            <p>
+              I’m interested in software development roles, internships and freelance work:
+              building products for companies, and websites and SEO for businesses that need to be
+              found. If that sounds like something you’re working on, <a href="#contact">get in
+              touch</a>.
+            </p>
+          </div>
+          <div class="portrait-frame">
+            <img src="assets/img/portrait.jpg" alt="Portrait of Melvin Tabitha" width="1254" height="1254" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CV & Resume ================= -->
+    <section class="section" id="cv" aria-label="CV and resume">
+      <div class="container">
+        <span class="eyebrow">~/cv</span>
+        <h2 class="section-title">CV &amp; resume</h2>
+        <p class="section-intro">I keep two versions. Open whichever fits what you need.</p>
+        <div class="cv-choices">
+          <article class="cv-choice">
+            <h3>CV</h3>
+            <p>The full picture. Work, projects with technical depth, skills, education.</p>
+            <a class="btn" href="cv/Melvin-Tabitha-CV.pdf" target="_blank" rel="noopener">Open my CV</a>
+          </article>
+          <article class="cv-choice">
+            <h3>Resume</h3>
+            <p>The short version. Built for a quick scan.</p>
+            <a class="btn btn-ghost" href="cv/Melvin-Tabitha-Resume.pdf" target="_blank" rel="noopener">Open my resume</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Certifications =================
+         This section is intentionally commented out until real certificates
+         are supplied. To enable it: for each certification, fill in a card,
+         then remove the comment markers. Never list unverified credentials.
+
+    <section class="section" id="certifications" aria-label="Certifications">
+      <div class="container">
+        <span class="eyebrow">~/certifications</span>
+        <h2 class="section-title">Certifications</h2>
+        <ul class="certs-list">
+          <li class="cert">
+            <h3>CERTIFICATION NAME</h3>
+            <p class="issuer">Issuing organisation</p>
+            <p class="meta">Issued YYYY-MM · Credential ID XXXX · <a href="VERIFICATION-URL" rel="noopener">Verify ↗</a></p>
+          </li>
+        </ul>
+      </div>
+    </section>
+    ================================================== -->
+
+    <!-- ================= Contact ================= -->
+    <section class="section" id="contact" aria-label="Contact">
+      <div class="container">
+        <span class="eyebrow">~/contact</span>
+        <h2 class="section-title">Let’s build something</h2>
+        <div class="contact-grid">
+          <div>
+            <p class="section-intro" style="margin-bottom:0">
+              Hiring a developer, need a web application or website built, or want your site to
+              show up in search? I read everything that comes in. Email or WhatsApp is the
+              fastest way to reach me.
+            </p>
+            <div class="contact-channels">
+              <button class="channel copy-email" type="button" data-copy="melvintabitha26@gmail.com">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+                <span>melvintabitha26@gmail.com
+                  <span class="sub">click to copy · or <a href="mailto:melvintabitha26@gmail.com">open email app</a></span>
+                </span>
+                <span class="copied-note">copied ✓</span>
+              </button>
+              <a class="channel" href="https://wa.me/254729563144" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+                <span>WhatsApp<span class="sub">+254 729 563 144</span></span>
+              </a>
+              <a class="channel" href="https://www.linkedin.com/in/melvin-tabitha-5abb782a2/" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V9h4v1.5A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                <span>LinkedIn<span class="sub">melvin-tabitha</span></span>
+              </a>
+              <a class="channel" href="https://github.com/MelvinTabitha738" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5a5.34 5.34 0 0 0-1.5-3.5 5 5 0 0 0-.08-3.5s-1.18-.35-3.92 1.5a13.38 13.38 0 0 0-7 0C4.76 1.65 3.58 2 3.58 2A5 5 0 0 0 3.5 5.5 5.34 5.34 0 0 0 2 9c0 3.5 3 5.5 6 5.5a4.8 4.8 0 0 0-1 3.5v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+                <span>GitHub<span class="sub">MelvinTabitha738</span></span>
+              </a>
+            </div>
+            <p class="contact-secondary">
+              Also on <a href="https://instagram.com/tabitha_can_do" rel="noopener">Instagram</a> ·
+              phone <a href="tel:+254729563144">+254 729 563 144</a>
+            </p>
+          </div>
+
+          <form class="compose" id="compose-form" novalidate>
+            <h3>Draft a message here</h3>
+            <p class="hint">Nothing is stored on this site. The buttons open WhatsApp or your own email app with the message pre-written.</p>
+            <label for="c-name">Your name</label>
+            <input id="c-name" name="name" type="text" autocomplete="name" required>
+            <label for="c-message">Message</label>
+            <textarea id="c-message" name="message" required placeholder="What are you building, or what do you need?"></textarea>
+            <p class="error" role="alert" aria-live="polite"></p>
+            <div class="actions">
+              <button class="btn" type="submit">Send via WhatsApp</button>
+              <button class="btn btn-ghost" type="button" id="compose-email">Send via email</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong style="color:var(--text)">Melvin Tabitha</strong> — Software Developer · Kenya</p>
+      <nav aria-label="Footer">
+        <a href="projects/index.html">Projects</a>
+        <a href="https://github.com/MelvinTabitha738" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/melvin-tabitha-5abb782a2/" rel="noopener">LinkedIn</a>
+        <a href="mailto:melvintabitha26@gmail.com">Email</a>
+      </nav>
+      <p class="colophon">© <span id="year">2026</span> Melvin Tabitha</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js?v=11" defer></script>
+  <script src="js/terminal.js?v=3" defer></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Page not found — Melvin Tabitha</title>
+  <meta name="description" content="That page doesn't exist. Head back to Melvin Tabitha's portfolio.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0b0e13">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/main.css?v=10">
+  <script>document.documentElement.classList.replace("no-js","js");</script>
+  <script>
+    (function () {
+      var theme = "dark";
+      try {
+        var saved = localStorage.getItem("melvin.theme");
+        theme = saved || (
+          window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches
+            ? "light"
+            : "dark"
+        );
+      } catch (e) {}
+      document.documentElement.setAttribute("data-theme", theme);
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute("content", theme === "light" ? "#f8f7f4" : "#0b0e13");
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="wordmark" href="index.html"><span class="tilde">~/</span>melvin-tabitha</a>
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light mode" title="Switch to light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+<button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <a href="projects/index.html">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="error-page">
+    <div class="container">
+      <p class="code">$ cat requested-page<br>cat: requested-page: No such file or directory <span style="color:var(--faint)">(404)</span></p>
+      <h1>This page doesn’t exist.</h1>
+      <p style="color:var(--muted);max-width:50ch">
+        The link may be old or mistyped. Everything worth seeing is one hop away:
+      </p>
+      <p class="hero-actions" style="margin-top:22px">
+        <a class="btn" href="index.html">Back to home</a>
+        <a class="btn btn-ghost" href="projects/index.html">Browse projects</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong style="color:var(--text)">Melvin Tabitha</strong> — Software Developer · Kenya</p>
+      <p class="colophon">© <span id="year">2026</span> Melvin Tabitha</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js?v=11" defer></script>
+  <script src="js/terminal.js?v=3" defer></script>
+</body>
+</html>

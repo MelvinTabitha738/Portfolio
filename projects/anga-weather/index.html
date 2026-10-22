@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Anga Weather — Case Study — Melvin Tabitha</title>
+  <meta name="description" content="How Anga, a weather dashboard for Kenya, survives a 1,000-requests-per-month API quota: Redis caching, request coalescing, a circuit breaker and honest freshness. A case study by Melvin Tabitha.">
+  <link rel="canonical" href="https://melvintabitha.vercel.app/projects/anga-weather/">
+  <meta name="theme-color" content="#0b0e13">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Anga Weather — engineering case study">
+  <meta property="og:description" content="Surviving a 1,000-requests-per-month API quota: caching, request coalescing and graceful degradation in Django and React.">
+  <meta property="og:url" content="https://melvintabitha.vercel.app/projects/anga-weather/">
+  <meta property="og:image" content="https://melvintabitha.vercel.app/assets/img/projects/anga-weather.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+  <link rel="preload" href="../../assets/fonts/manrope-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/jetbrains-mono-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../css/main.css?v=10">
+  <script>document.documentElement.classList.replace("no-js","js");</script>
+  <script>
+    (function () {
+      var theme = "dark";
+      try {
+        var saved = localStorage.getItem("melvin.theme");
+        theme = saved || (
+          window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches
+            ? "light"
+            : "dark"
+        );
+      } catch (e) {}
+      document.documentElement.setAttribute("data-theme", theme);
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute("content", theme === "light" ? "#f8f7f4" : "#0b0e13");
+    })();
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://melvintabitha.vercel.app/" },
+      { "@type": "ListItem", "position": 2, "name": "Projects", "item": "https://melvintabitha.vercel.app/projects/" },
+      { "@type": "ListItem", "position": 3, "name": "Anga Weather case study", "item": "https://melvintabitha.vercel.app/projects/anga-weather/" }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="wordmark" href="../../index.html"><span class="tilde">~/</span>melvin-tabitha</a>
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light mode" title="Switch to light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+<button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <a href="../index.html" class="active">Projects</a>
+        <a href="../../index.html#skills">Skills</a>
+        <a href="../../index.html#services">Services</a>
+        <a href="../../index.html#about">About</a>
+        <a href="../../index.html#contact">Contact</a>
+        <a class="nav-cv" href="../../cv/Melvin-Tabitha-CV.pdf" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="case-header">
+      <div class="container">
+        <p class="breadcrumbs"><a href="../../index.html">~</a> / <a href="../index.html">projects</a> / anga-weather</p>
+        <h1>Anga — Weather for Kenya</h1>
+        <p class="tagline">
+          A weather dashboard for Kenyan counties and towns, and underneath it a Django service
+          designed around one brutal constraint: the upstream API allows 1,000 requests a month.
+        </p>
+        <dl class="case-meta">
+          <div><dt>role</dt><dd>Sole developer, full stack</dd></div>
+          <div><dt>backend</dt><dd>Django · DRF · Redis · PostgreSQL</dd></div>
+          <div><dt>frontend</dt><dd>React · Vite · plain CSS</dd></div>
+          <div><dt>deployed on</dt><dd>Vercel · Render · Neon</dd></div>
+          <div><dt>links</dt><dd>
+            <a href="https://anga-gules.vercel.app/" rel="noopener">Live ↗</a> ·
+            <a href="https://github.com/MelvinTabitha738/Anga-weather" rel="noopener">Code ↗</a>
+          </dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="container">
+      <figure class="case-shot">
+        <img src="../../assets/img/projects/anga-weather.jpg" alt="The Anga Weather dashboard: current temperature and conditions for a Kenyan town, hourly outlook and 7-day forecast over a weather-reactive backdrop" width="1440" height="900" fetchpriority="high">
+      </figure>
+
+      <div class="prose">
+        <p>
+          <em>Anga</em> (Swahili for <em>sky</em>) shows current conditions, an hourly outlook and a
+          7-day forecast for 99 Kenyan counties and towns, over a backdrop that reacts to the actual
+          weather. It was built as a take-home assessment for a software developer role at
+          <a href="https://www.weather-ai.co/" rel="noopener">Weather AI</a>, against their public
+          weather API.
+        </p>
+
+        <h2>The problem</h2>
+        <p>
+          The provider’s free tier is limited to <strong>1,000 requests per month, about 33 a day
+          across every location combined</strong>. And the limit is monthly, not per-second: hit it,
+          and the resulting <code>429</code> doesn’t clear in a minute. It clears when the 30-day
+          window rolls over, potentially days later. A naive app that calls the API once per page
+          view burns the entire budget in an afternoon and then inflicts a multi-day outage on
+          itself.
+        </p>
+        <p>The governing idea of the whole design:</p>
+        <pre><span class="c"># a user request does not have to become an upstream request</span>
+1 user     →  1 upstream request      <span class="c">✗ naive</span>
+100 users  →  a handful per 30 min    <span class="g">✓ cached + coalesced</span></pre>
+        <p>
+          Two facts shaped everything, both <strong>verified against the live API rather than
+          assumed</strong>: the endpoint takes coordinates only (no place-name lookup on the free
+          tier), and the documented rate-limit headers turned out not to exist on real responses.
+          Quota has to be tracked another way.
+        </p>
+
+        <h2>Architecture</h2>
+        <pre>
+┌─────────────────────┐
+│    React (Vercel)   │  search · dashboard · freshness always shown
+└──────────┬──────────┘
+           │ HTTPS — no API key ever reaches the browser
+┌──────────▼──────────┐      ┌──────────────────────┐
+│ Django + DRF        │─────▶│  PostgreSQL (Neon)   │
+│ (Render)            │      │  Kenya gazetteer:    │
+│ validate · throttle │      │  47 counties,        │
+│ map errors to codes │      │  52 towns + aliases  │
+└──────────┬──────────┘      └──────────────────────┘
+┌──────────▼──────────┐
+│   Redis (Render)    │  fresh 30 min · stale 6 h fallback
+│                     │  single-flight locks · quota + breaker
+└──────────┬──────────┘
+           │ cache miss ONLY
+┌──────────▼──────────┐
+│   Weather-AI API    │  /v1/weather?lat&amp;lon&amp;days=7&amp;ai=false
+└─────────────────────┘</pre>
+        <p>
+          Location search is served entirely from an own PostgreSQL gazetteer (47 counties and 52
+          towns with aliases), because the upstream API resolves coordinates only.
+          <strong>Typing in the search box costs zero upstream quota.</strong>
+        </p>
+
+        <h2>Request coalescing</h2>
+        <p>
+          Fifty users requesting an uncached Nairobi at the same instant would mean fifty identical
+          upstream calls: 5% of the month’s budget in one burst. Instead, an atomic Redis lock
+          (<code>SET NX EX</code>) elects exactly one request as the <strong>leader</strong>; it
+          calls upstream once and writes the cache, while the other forty-nine wait for its result.
+        </p>
+        <p>This wasn’t just unit-tested; it was verified against a running server:</p>
+        <pre><span class="c">$ for i in $(seq 1 30); do curl -s "…/api/weather/?location=Kisumu" &amp; done; wait</span>
+HTTP status codes returned:   30 × 200
+
+<span class="c">$ curl "…/api/meta/stats/"</span>
+cache_miss                = 30
+coalesce_leader           = <span class="a">1</span>
+coalesce_follower_served  = 29
+upstream_request          = <span class="a">1</span>   <span class="g">← thirty requests, one upstream call</span></pre>
+        <p>
+          Two details make it correct rather than merely plausible: followers compare the cache
+          entry’s timestamp against what existed when they started waiting, so a stale entry is
+          never mistaken for the leader’s fresh result; and the leader releases the lock only if
+          its token still matches, so a slow leader can’t delete a successor’s lock.
+        </p>
+
+        <h2>Rate-limit strategy</h2>
+        <p>
+          When upstream says you’re rate-limited, the only correct move against a monthly quota is
+          to <strong>stop calling upstream</strong>. A retry cannot succeed and only burns budget.
+        </p>
+        <ul>
+          <li>A <code>429</code> opens a <strong>circuit breaker</strong>: every subsequent request
+            short-circuits to cached data without touching the network.</li>
+          <li>A <strong>quota reserve</strong> stops upstream calls entirely once fewer than 25
+            monthly requests remain, so ordinary traffic can never drain the budget to zero.</li>
+          <li>Quota is tracked by <strong>local counting</strong>, synced against the provider’s
+            usage endpoint at most once a day (about 3% of the budget), with an atomic claim so
+            multiple workers don’t all pay for the same sync.</li>
+          <li><strong>No retries anywhere.</strong> Transient 5xx failures back off briefly;
+            quota exhaustion backs off until the window can plausibly have rolled over.</li>
+        </ul>
+
+        <h2>Honest freshness</h2>
+        <p>
+          Stale data is never presented as current. Every response carries its age, and the UI
+          translates that honestly; the age even keeps ticking client-side, measured on a single
+          clock so a device with the wrong time can’t skew it.
+        </p>
+        <table>
+          <thead><tr><th>state</th><th>indicator</th><th>what the user reads</th></tr></thead>
+          <tbody>
+            <tr><td>Live</td><td>green dot</td><td>Updated just now</td></tr>
+            <tr><td>Cached</td><td>blue dot</td><td>Updated 4 minutes ago</td></tr>
+            <tr><td>Past TTL</td><td>amber dot</td><td>Updated 31 minutes ago · may be out of date + Refresh</td></tr>
+            <tr><td>Stale fallback</td><td>amber dot</td><td>Live updates are paused; showing the last saved reading</td></tr>
+          </tbody>
+        </table>
+
+        <h2>The interface</h2>
+        <p>
+          The backend classifies each WMO weather code into a small stable vocabulary
+          (<code>condition_group</code> + <code>intensity</code> + <code>is_day</code>), and the
+          frontend switches its animated backdrop, custom SVG icons and copy on that one contract.
+          Rain animation density follows the actual measured rainfall. Everything stops under
+          <code>prefers-reduced-motion</code>, and the weather is always stated in text, so the
+          animation is decoration rather than information.
+        </p>
+        <p>
+          Accessibility is tested, not asserted: a contrast audit found 20 WCAG failures on bright
+          daytime skies, so the text scrim is now <strong>solved per sky palette</strong>, and a
+          test recomputes the real contrast for every theme, gradient stop and text step so it
+          cannot regress. Search is a real ARIA combobox; the freshness line is an
+          <code>aria-live</code> region.
+        </p>
+
+        <h2>Security</h2>
+        <ul>
+          <li>The API key lives only in the backend environment: never in the bundle, a response,
+            a log line or an exception message. A test asserts error bodies can never contain
+            key fragments or the upstream hostname.</li>
+          <li>CORS is an explicit allow-list; only <code>GET</code>/<code>OPTIONS</code> pass.</li>
+          <li>Location input is length-capped and charset-restricted before it can reach the cache
+            or database; normalisation doubles as a security boundary.</li>
+          <li>Per-client throttling (60/min weather, 120/min search) protects the backend and,
+            with it, the upstream quota.</li>
+          <li>Production refuses to start without its secrets instead of running insecurely.</li>
+        </ul>
+
+        <h2>Testing</h2>
+        <p>
+          <strong>222 automated tests</strong> (98 backend, 124 frontend) concentrated on the
+          engineering behaviour: one test runs 25 real threads against the coalescing lock and
+          asserts a single upstream call; another asserts against a captured live API response so
+          an upstream shape change fails loudly. A mock upstream server
+          (<code>tools/mock_weather_api.py</code>) exercises the whole real code path, including
+          simulated 429s and outages, without spending quota in development.
+        </p>
+
+        <h2>Trade-offs, stated plainly</h2>
+        <ul>
+          <li>Coalescing followers block a worker thread (bounded at 12s) because the views are
+            synchronous. Fine at this scale; an async view would remove it.</li>
+          <li>Without Redis the lock degrades to per-process, still far better than nothing, and
+            local development needs no Redis at all.</li>
+          <li>99 hand-picked locations, no geocoding: a deliberate consequence of the free tier.</li>
+          <li>Render’s free tier cold-starts the API in ~30 seconds after idle periods.</li>
+        </ul>
+      </div>
+
+      <nav class="case-nav" aria-label="More projects">
+        <a href="../index.html">← All projects</a>
+        <a href="../studybuddy/index.html">Next case study: StudyBuddy →</a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong style="color:var(--text)">Melvin Tabitha</strong> — Software Developer · Kenya</p>
+      <nav aria-label="Footer">
+        <a href="../../index.html">Home</a>
+        <a href="https://github.com/MelvinTabitha738" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/melvin-tabitha-5abb782a2/" rel="noopener">LinkedIn</a>
+        <a href="mailto:melvintabitha26@gmail.com">Email</a>
+      </nav>
+      <p class="colophon">© <span id="year">2026</span> Melvin Tabitha</p>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js?v=11" defer></script>
+  <script src="../../js/terminal.js?v=3" defer></script>
+</body>
+</html>

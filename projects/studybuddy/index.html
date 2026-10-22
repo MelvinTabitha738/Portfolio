@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>StudyBuddy — Case Study — Melvin Tabitha</title>
+  <meta name="description" content="How StudyBuddy keeps AI summaries honest: grounding enforced after generation, quota-aware Gemini fallbacks, and hardened custom auth. An engineering case study by Melvin Tabitha.">
+  <link rel="canonical" href="https://melvintabitha.vercel.app/projects/studybuddy/">
+  <meta name="theme-color" content="#0b0e13">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="StudyBuddy — engineering case study">
+  <meta property="og:description" content="An AI study tool that summarizes only from the student's own notes, and verifies that it did.">
+  <meta property="og:url" content="https://melvintabitha.vercel.app/projects/studybuddy/">
+  <meta property="og:image" content="https://melvintabitha.vercel.app/assets/img/projects/studybuddy.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+  <link rel="preload" href="../../assets/fonts/manrope-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/jetbrains-mono-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../css/main.css?v=10">
+  <script>document.documentElement.classList.replace("no-js","js");</script>
+  <script>
+    (function () {
+      var theme = "dark";
+      try {
+        var saved = localStorage.getItem("melvin.theme");
+        theme = saved || (
+          window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches
+            ? "light"
+            : "dark"
+        );
+      } catch (e) {}
+      document.documentElement.setAttribute("data-theme", theme);
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute("content", theme === "light" ? "#f8f7f4" : "#0b0e13");
+    })();
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://melvintabitha.vercel.app/" },
+      { "@type": "ListItem", "position": 2, "name": "Projects", "item": "https://melvintabitha.vercel.app/projects/" },
+      { "@type": "ListItem", "position": 3, "name": "StudyBuddy case study", "item": "https://melvintabitha.vercel.app/projects/studybuddy/" }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="wordmark" href="../../index.html"><span class="tilde">~/</span>melvin-tabitha</a>
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light mode" title="Switch to light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+<button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <a href="../index.html" class="active">Projects</a>
+        <a href="../../index.html#skills">Skills</a>
+        <a href="../../index.html#services">Services</a>
+        <a href="../../index.html#about">About</a>
+        <a href="../../index.html#contact">Contact</a>
+        <a class="nav-cv" href="../../cv/Melvin-Tabitha-CV.pdf" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="case-header">
+      <div class="container">
+        <p class="breadcrumbs"><a href="../../index.html">~</a> / <a href="../index.html">projects</a> / studybuddy</p>
+        <h1>StudyBuddy</h1>
+        <p class="tagline">
+          An AI study tool for students: upload notes or a lecture recording, get summaries, quizzes
+          and flashcards, grounded strictly in your own material, with the grounding verified in
+          code rather than promised in a prompt.
+        </p>
+        <dl class="case-meta">
+          <div><dt>role</dt><dd>Sole developer, full stack</dd></div>
+          <div><dt>backend</dt><dd>Django · DRF · PostgreSQL (Neon)</dd></div>
+          <div><dt>ai</dt><dd>Gemini (summaries, transcription)</dd></div>
+          <div><dt>frontend</dt><dd>React 19 · TanStack Start · Tailwind 4</dd></div>
+          <div><dt>links</dt><dd>
+            <a href="https://study-buddy-one-lovat.vercel.app/" rel="noopener">Live ↗</a> ·
+            <a href="https://github.com/MelvinTabitha738/study-buddy-ai" rel="noopener">Code ↗</a>
+          </dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="container">
+      <figure class="case-shot">
+        <img src="../../assets/img/projects/studybuddy.jpg" alt="StudyBuddy's landing page: long lecture notes, made short and clear. Upload notes, choose a format, revise and test yourself" width="1440" height="900" fetchpriority="high">
+      </figure>
+
+      <div class="prose">
+        <h2>The problem</h2>
+        <p>
+          Students revising from long lecture notes need summaries they can trust. A general-purpose
+          chatbot happily invents a plausible definition that was never in the notes, and a student
+          revising from an invented definition is worse off than one who never summarized at all.
+          StudyBuddy’s core promise is on its landing page: <strong>the AI summarizes, but only from
+          your text</strong>.
+        </p>
+
+        <h2>What it does</h2>
+        <ul>
+          <li>Accepts notes as <strong>PDF, Word, plain text or a lecture recording</strong>;
+            audio is transcribed first, then treated like any other notes.</li>
+          <li>Produces summaries in the student’s choice of <strong>four lengths and eight
+            formats</strong>: revision notes, bullets, exam prep, concepts, flashcards, Q&amp;A
+            and more.</li>
+          <li>Extracts key terms, definitions, formulae and examples; generates
+            <strong>quizzes and flashcards</strong> from the same material.</li>
+          <li>Exports to <strong>PDF, Word or text</strong> for offline revision; recent summaries
+            are also cached locally so revision works on an unreliable connection.</li>
+          <li>Accounts via email (with verification codes) or <strong>Google sign-in</strong>.</li>
+        </ul>
+
+        <h2>Keeping the AI honest</h2>
+        <p>
+          Prompt instructions alone don’t make grounding true; models drift. So StudyBuddy
+          enforces grounding <strong>after</strong> generation, in code:
+        </p>
+        <pre><span class="c"># every AI response passes verification before the student sees it</span>
+keywords     → must literally appear in the notes (plural-aware)
+definitions  → dropped unless ≥ 50% of their words overlap the source
+formulae     → dropped below 60% overlap
+quiz items   → must quote an <span class="a">evidence sentence</span>; ≥ 70% of the
+               question’s words must come from the notes
+"explain X"  → refused outright when X isn’t in the notes</pre>
+        <p>
+          The model also runs at low temperature with structured JSON output, so responses are
+          parsed, not scraped. What survives verification is what the student sees.
+        </p>
+
+        <h2>Living inside a free AI quota</h2>
+        <p>
+          The free Gemini tier allows the whole project roughly 20 requests a day, so the AI layer
+          treats failure as a first-class state:
+        </p>
+        <ul>
+          <li>Errors are <strong>classified</strong> (daily quota, rate limit, overloaded, bad
+            parameter) and only transient ones are retried, with backoff.</li>
+          <li>When one model’s daily quota runs out, the service <strong>falls back across a chain
+            of Gemini models</strong> automatically.</li>
+          <li>Results are cached under a <strong>SHA-256 hash of the text plus the chosen
+            options</strong>, so a shared class handout is summarized once, not once per student.</li>
+          <li>The SDK client is built at startup, shaving ~3.4 s off the first request.</li>
+        </ul>
+
+        <h2>Auth, built properly</h2>
+        <p>Authentication is custom (JWT with refresh-token rotation and a blacklist), and the
+          details are where it earns its keep:</p>
+        <ul>
+          <li><strong>Argon2</strong> password hashing.</li>
+          <li>Login takes the same time whether or not the email exists (a dummy hash is checked),
+            so the endpoint can’t be used to enumerate registered addresses.</li>
+          <li>Google sign-in tokens are verified <strong>server-side</strong>, audience check
+            included; the backend never trusts the browser’s word.</li>
+          <li>Per-scope rate limits: 8 login attempts a minute, 20 summaries an hour.</li>
+          <li>Uploads are validated by <strong>file signature</strong>, not extension, so a renamed
+            executable is rejected.</li>
+        </ul>
+
+        <h2>Architecture</h2>
+        <pre>
+┌──────────────────────────┐
+│ React 19 + TanStack      │  SSR frontend (Vercel)
+│ Start · Tailwind 4       │  60 most recent summaries cached locally
+└───────────┬──────────────┘
+            │ JWT (rotating refresh tokens)
+┌───────────▼──────────────┐     ┌─────────────────────┐
+│ Django + DRF (Render)    │────▶│ PostgreSQL (Neon)   │
+│ ~31 endpoints:           │     └─────────────────────┘
+│ notes · auth · admin     │     ┌─────────────────────┐
+│ analytics · exports      │────▶│ Object storage      │
+└───────────┬──────────────┘     │ (Cloudinary)        │
+            │                    └─────────────────────┘
+┌───────────▼──────────────┐
+│ Gemini API               │  summaries · transcription
+│ model fallback chain     │  structured JSON · low temp
+└──────────────────────────┘</pre>
+        <p>
+          Emails (verification codes, password resets) go out through Brevo’s HTTPS API because the
+          host blocks SMTP ports on its free plan. The kind of deployment detail that only shows
+          up when you actually ship on free tiers.
+        </p>
+
+        <h2>Scale</h2>
+        <p>
+          About <strong>14,600 lines of hand-written code</strong>: four Django apps exposing ~31
+          API endpoints, an admin panel with CSV/PDF reporting, eight transactional email
+          templates, and a React 19 frontend with seven pages.
+        </p>
+
+        <h2>Honest limitations</h2>
+        <ul>
+          <li>No automated test suite yet; the verification layer is the project’s safety net,
+            and tests are the obvious next investment.</li>
+          <li>Long inputs are truncated (20,000 words) rather than chunked.</li>
+          <li>No OCR, so scanned PDFs aren’t supported.</li>
+          <li>The shared AI quota is small; the product is engineered around that reality rather
+            than pretending otherwise.</li>
+        </ul>
+      </div>
+
+      <nav class="case-nav" aria-label="More projects">
+        <a href="../anga-weather/index.html">← Previous: Anga Weather</a>
+        <a href="../index.html">All projects →</a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong style="color:var(--text)">Melvin Tabitha</strong> — Software Developer · Kenya</p>
+      <nav aria-label="Footer">
+        <a href="../../index.html">Home</a>
+        <a href="https://github.com/MelvinTabitha738" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/melvin-tabitha-5abb782a2/" rel="noopener">LinkedIn</a>
+        <a href="mailto:melvintabitha26@gmail.com">Email</a>
+      </nav>
+      <p class="colophon">© <span id="year">2026</span> Melvin Tabitha</p>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js?v=11" defer></script>
+  <script src="../../js/terminal.js?v=3" defer></script>
+</body>
+</html>
