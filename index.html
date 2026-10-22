@@ -353,14 +353,14 @@ export function dispatch(line) {
               <span class="mark">▸</span>
               <span class="mcol">
                 <span class="mlabel">Verified live: 30 simultaneous requests → exactly 1 upstream call.</span>
-                <span class="mcap">Request coalescing lets concurrent cache misses share one in-flight fetch, so a traffic spike costs the free-tier quota once, not thirty times.</span>
+                <span class="mcap">Request coalescing protects the quota under spiky traffic.</span>
               </span>
             </p>
             <p class="metric">
               <span class="mark">▸</span>
               <span class="mcol">
                 <span class="mlabel">222 automated tests.</span>
-                <span class="mcap">98 backend and 124 frontend, concentrated on real behaviour: 25 threads against the coalescing lock, a mock upstream that simulates 429s and outages, and contrast recomputed per sky palette so accessibility cannot regress.</span>
+                <span class="mcap">98 backend, 124 frontend. Concurrency, mocked outages, accessibility contrast.</span>
               </span>
             </p>
             <ul class="chips">
