@@ -47,6 +47,8 @@ Live site: https://melvintabitha.vercel.app/
 ├── cv/
 │   ├── Melvin-Tabitha-CV.pdf
 │   └── Melvin-Tabitha-Resume.pdf
+├── tools/
+│   └── generate_cv.py      # Builds both PDFs in cv/ (ReportLab; not deployed)
 ├── robots.txt
 ├── sitemap.xml
 └── vercel.json             # Headers, cache rules, routing
