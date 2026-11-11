@@ -353,14 +353,14 @@ export function dispatch(line) {
               <span class="mark">▸</span>
               <span class="mcol">
                 <span class="mlabel">Verified live: 30 simultaneous requests → exactly 1 upstream call.</span>
-                <span class="mcap">Request coalescing protects the quota under spiky traffic.</span>
+                <span class="mcap">Measured from the production stats endpoint, not a benchmark.</span>
               </span>
             </p>
             <p class="metric">
               <span class="mark">▸</span>
               <span class="mcol">
-                <span class="mlabel">222 automated tests.</span>
-                <span class="mcap">98 backend, 124 frontend. Concurrency, mocked outages, accessibility contrast.</span>
+                <span class="mlabel">222 automated tests, including a 25-thread race on the coalescing lock.</span>
+                <span class="mcap">98 backend, 124 frontend. Mocked outages, live-response contract, contrast checks.</span>
               </span>
             </p>
             <ul class="chips">
@@ -393,7 +393,7 @@ export function dispatch(line) {
               quote an evidence sentence. Custom JWT auth, file-signature upload checks and a
               quota-aware fallback chain across Gemini models.
             </p>
-            <p class="metric"><span class="mark">▸</span> ~31 API endpoints and 14,600 lines of hand-written code across a Django API and React 19 frontend.</p>
+            <p class="metric"><span class="mark">▸</span> Runs on ~20 free AI requests a day: SHA-256 result caching and automatic fallback across Gemini models.</p>
             <ul class="chips">
               <li>Django</li><li>DRF</li><li>PostgreSQL</li><li>Gemini API</li><li>React 19</li><li>TanStack Start</li><li>Tailwind</li>
             </ul>
