@@ -17,7 +17,7 @@
   var _src = (document.currentScript && document.currentScript.src) || "";
   var SITE_ROOT = _src.split("?")[0].replace(/\/js\/terminal\.js$/, "/") || "./";
 
-  var CV_URL = SITE_ROOT + "cv/Melvin-Tabitha-CV.pdf?v=2";
+  var CV_URL = SITE_ROOT + "cv/Melvin-Tabitha-CV.pdf?v=3";
 
   /* ---- Static project + link data (kept in sync with the HTML) ----------- */
   var LINKS = {

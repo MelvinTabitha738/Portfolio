@@ -163,8 +163,7 @@ EXPERIENCE = [
         "bullets": [
             "I designed, developed, and deployed the live website for "
             "Computer Science Academy Africa, configuring its production "
-            "hosting on the organisation&rsquo;s accounts and implementing "
-            "the technical SEO fundamentals that keep the organisation "
+            "hosting and implementing the technical SEO fundamentals that keep the organisation "
             "discoverable to the students and partners it exists to reach.",
             "I take responsibility for a real external client whose users "
             "depend on the site being up and findable, not a weekend "
@@ -234,8 +233,8 @@ PROJECTS = [
         ],
         "bullets": [
             "As sole developer, I built an AI study assistant that turns "
-            "uploaded notes (PDF, Word, plain text, or lecture recordings "
-            "transcribed with Gemini) into summaries, quizzes, and "
+            "uploaded notes (PDF, Word, plain text, or lecture recordings) "
+            "into summaries, quizzes, and "
             "flashcards grounded strictly in the student&rsquo;s own material.",
             "I implemented a post-generation verification layer: keywords "
             "must appear in the source, definitions and formulae are dropped "
@@ -261,26 +260,18 @@ PROJECTS = [
         "name": "CallShield: AI-Powered Scam Call Protection System",
         "links": [],
         "bullets": [
-            "I built an AI-driven call security system that detects and "
-            "flags potential scam calls in real time, addressing a problem "
-            "that affects millions of mobile phone users across Africa "
-            "every day. The product&rsquo;s job is to give a user a signal "
-            "before they engage with a scam, not after they have lost money.",
-            "I used pattern recognition and data analysis to classify "
-            "incoming calls, so the model&rsquo;s output can be acted on in "
-            "the moment rather than after a long investigation.",
-            "I developed the Django backend with RESTful APIs to handle "
-            "call data processing and machine learning model integration.",
-            "I designed and managed the PostgreSQL database for secure "
-            "storage of call records and user data.",
-            "I built the frontend using React Native, delivering a "
-            "responsive and user-friendly mobile experience.",
-            "I served as Project Manager, leading planning, coordinating "
-            "team tasks, managing timelines, and overseeing testing and "
-            "deployment readiness. The combination of technical ownership "
-            "and team leadership reflects the realities of small engineering "
-            "teams, where the person who ships the code is often also the "
-            "person who coordinates it.",
+            "I built an AI-powered system that detects and flags potential "
+            "scam calls in real time as part of a three-person team, with "
+            "each member owning a distinct part of the system.",
+            "I developed the Kotlin mobile frontend and the Django backend "
+            "with RESTful APIs and PostgreSQL, and integrated the scam "
+            "detection model into the application so incoming calls are "
+            "classified as they arrive.",
+            "I worked closely with a teammate who trained the scam detection "
+            "model and another who carried out security analysis and "
+            "penetration testing, and served as Project Manager, "
+            "coordinating planning, tasks, and timelines across the team.",
+            "Stack: Kotlin, Django, PostgreSQL.",
         ],
     },
     {
@@ -288,17 +279,12 @@ PROJECTS = [
         "links": [],
         "bullets": [
             "I built a student-focused housing platform that connects "
-            "tenants with verified rental listings and processes B2B "
-            "payments through the Safaricom Daraja (M-Pesa) API. The "
-            "project solves a specific real world problem: students "
-            "arriving in a new city need somewhere safe to live, and the "
-            "platform integrates with the mobile money infrastructure "
-            "almost every Kenyan already uses rather than asking them to "
-            "adopt yet another payment method.",
+            "tenants with verified rental listings, so students arriving in "
+            "a new city can find somewhere safe to live.",
             "I developed the backend using Django and Django REST "
             "Framework, with FastAPI supporting high-performance services, "
-            "and designed a MySQL database covering property listings, "
-            "users, and transactions.",
+            "and designed a MySQL database covering property listings and "
+            "users.",
             "I integrated the Google Maps API for location-based property "
             "discovery, so students can filter listings by proximity to "
             "campus rather than scrolling through unrelated options.",
@@ -313,15 +299,13 @@ PROJECTS = [
             ("Code", "https://github.com/MelvinTabitha738/UjamaaFlow"),
         ],
         "bullets": [
-            "I built a resource donation platform in Flask that connects "
-            "donors with recipients through a three-role model (donor, "
-            "recipient, administrator), with role-based access and a "
-            "separate dashboard for each role.",
-            "I modelled donations, media uploads, requests, matches, and "
-            "community reports with SQLAlchemy, supporting photo listings "
-            "across six categories, category and location filtering, admin "
-            "matching of donations to requests, and a moderation queue fed "
-            "by community reports.",
+            "I worked in a team to build a Flask resource donation platform "
+            "that connects donors with recipients through a three-role "
+            "model (donor, recipient, administrator).",
+            "I handled the web design and frontend, building the role-based "
+            "dashboards, photo listings, and category and location "
+            "filtering with Jinja templates and Bootstrap, while a teammate "
+            "built the backend.",
             "Stack: Flask, Flask-SQLAlchemy, Flask-Login, Jinja, SQLite, "
             "Bootstrap; deployed on Render.",
         ],
@@ -576,22 +560,22 @@ def resume_project_bullet(p):
             "hashing, and file-signature upload checks. Sole developer."
         ),
         "CallShield": (
-            "AI-driven real time scam call detection, aimed at giving users "
-            "a signal before they engage with a scam rather than after they "
-            "lose money. Django and REST backend, React Native frontend, "
-            "PostgreSQL. Technical ownership plus Project Manager role."
+            "Real time scam call detection built by a three-person team. I "
+            "developed the Kotlin frontend and the Django REST backend with "
+            "PostgreSQL and integrated the scam detection model, working "
+            "with a teammate who trained the model and another who handled "
+            "security analysis and penetration testing. Project Manager."
         ),
         "SmartHunt": (
-            "Student housing platform with Safaricom Daraja (M-Pesa) "
-            "payment integration, meeting Kenyan users on the mobile money "
-            "infrastructure they already use. Google Maps powered location "
-            "search, Django and FastAPI backend, React frontend."
+            "Student housing platform connecting tenants with verified "
+            "rental listings. Google Maps powered location search, Django "
+            "and FastAPI backend, React frontend."
         ),
         "UjamaaFlow": (
-            "Flask and SQLAlchemy donation platform with three-role accounts "
-            "(donor, recipient, administrator), photo listings with category "
-            "and location filtering, admin matching of donations to "
-            "requests, and a community-report moderation queue."
+            "Team-built Flask donation platform with three-role accounts "
+            "(donor, recipient, administrator). I handled the web design and "
+            "frontend (role-based dashboards, photo listings, category and "
+            "location filtering) while a teammate built the backend."
         ),
         "Master Photography": (
             "Ten-page studio website in HTML, CSS, and vanilla JavaScript "
@@ -601,9 +585,8 @@ def resume_project_bullet(p):
             "flow with Kenyan phone number validation."
         ),
         "CSA Africa": (
-            "Design, development, deployment, hosting configuration on the "
-            "organisation&rsquo;s accounts, and technical SEO for the "
-            "Computer Science Academy Africa website."
+            "Design, development, deployment, hosting configuration, and "
+            "technical SEO for the Computer Science Academy Africa website."
         ),
         "Developer Portfolio": (
             "Static site in HTML, CSS, and vanilla JavaScript with no "
