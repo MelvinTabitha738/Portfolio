@@ -201,7 +201,7 @@ PROJECTS = [
             ("Code", "https://github.com/MelvinTabitha738/Anga-weather"),
         ],
         "bullets": [
-            "As sole developer, I engineered a weather platform for 99 Kenyan "
+            "I engineered a weather platform for 99 Kenyan "
             "counties and towns around a strict upstream limit of 1,000 API "
             "requests per month, placing a Django REST API between the React "
             "frontend and the Weather AI API so that user requests do not "
