@@ -727,6 +727,34 @@ kbd {
 .project-card .project-links {
   font-size: 0.9rem;
 }
+/* Single column (below 2 × 290px + gap at 92vw): show the project name before
+   the screenshot. .body is flattened so its children can be ordered around the
+   thumbnail; its padding moves onto the children. */
+@media (max-width: 651px) {
+  .project-card .body {
+    display: contents;
+  }
+  .project-card .body > * {
+    order: 4;
+    padding-inline: 22px;
+  }
+  .project-card .body > .project-kind {
+    order: 1;
+    padding-top: 20px;
+  }
+  .project-card .body > h3 {
+    order: 2;
+    margin-bottom: 14px;
+  }
+  .project-card .thumb {
+    order: 3;
+    border-top: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .project-card .body > .project-links {
+    padding-bottom: 22px;
+  }
+}
 
 /* ---- Skills ------------------------------------------------------------------ */
 .skills-grid {
