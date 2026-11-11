@@ -1311,17 +1311,24 @@ kbd {
   }
 }
 @media (max-width: 640px) {
+  .term-launcher {
+    right: calc(14px + env(safe-area-inset-right));
+    bottom: calc(14px + env(safe-area-inset-bottom));
+  }
+  /* Full-screen sheet. --term-vh / --term-top are set by js/terminal.js from
+     visualViewport so the input row stays above the on-screen keyboard. */
   .term-overlay {
     align-items: stretch;
     padding: 0;
+    bottom: auto;
+    top: var(--term-top, 0px);
+    height: var(--term-vh, 100dvh);
   }
   .term-panel {
-    max-height: 100dvh;
-    height: 100dvh;
+    max-height: none;
+    height: 100%;
     border-radius: 0;
-    border-left: 0;
-    border-right: 0;
-    border-bottom: 0;
+    border: 0;
   }
 }
 
@@ -1460,6 +1467,57 @@ kbd {
   font-size: 0.95rem;
   padding: 0;
   caret-color: var(--accent);
+}
+
+.term-body a {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .term-bar {
+    padding: calc(8px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right)) 8px calc(12px + env(safe-area-inset-left));
+  }
+  .term-bar .close {
+    min-height: 36px;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+  }
+  .term-body {
+    padding: 12px calc(12px + env(safe-area-inset-right)) 6px calc(12px + env(safe-area-inset-left));
+    font-size: 0.85rem;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  /* Two-column tables stack: label above value */
+  .term-body table,
+  .term-body tbody,
+  .term-body tr,
+  .term-body td {
+    display: block;
+    width: auto;
+  }
+  .term-body tr {
+    margin-bottom: 6px;
+  }
+  .term-body td,
+  .term-body td:first-child {
+    padding: 0;
+    width: auto;
+  }
+  .term-input-row {
+    padding: 8px calc(12px + env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) calc(12px + env(safe-area-inset-left));
+  }
+  /* 16px stops iOS Safari from zooming the page when the input is focused */
+  .term-input-row input {
+    font-size: 16px;
+    min-width: 0;
+    min-height: 32px;
+  }
+  /* Shorten the prompt to "~$" so the input keeps most of the row */
+  .term-input-row .ps .ps-host,
+  .term-echo .ps .ps-host {
+    display: none;
+  }
 }
 
 /* Keep page content readable behind the overlay when it is open */

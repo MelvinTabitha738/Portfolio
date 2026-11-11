@@ -160,11 +160,13 @@
 
   var body = h("div", { class: "term-body", id: "term-body", role: "log", "aria-live": "polite", "aria-relevant": "additions" });
 
-  var promptEl = h("span", { class: "ps", "aria-hidden": "true", text: "melvin@portfolio:~$" });
+  var PROMPT_HTML = '<span class="ps-host">melvin@portfolio:</span>~$';
+  var promptEl = h("span", { class: "ps", "aria-hidden": "true", html: PROMPT_HTML });
   var input = h("input", {
     class: "term-input",
     id: "term-input",
     type: "text",
+    enterkeyhint: "go",
     autocomplete: "off",
     autocapitalize: "off",
     autocorrect: "off",
@@ -202,7 +204,7 @@
   }
   function echo(cmd) {
     var el = h("div", { class: "term-line term-echo" });
-    el.innerHTML = '<span class="ps">melvin@portfolio:~$</span>' + escapeText(cmd);
+    el.innerHTML = '<span class="ps">' + PROMPT_HTML + "</span>" + escapeText(cmd);
     body.appendChild(el);
   }
   function spacer() {
@@ -543,16 +545,33 @@
   /* ---- Open / close ----------------------------------------------------- */
   var lastFocus = null;
 
+  // On phones the on-screen keyboard shrinks the visual viewport but not the
+  // layout viewport, so size the overlay to what is actually visible.
+  var vv = window.visualViewport;
+  function fitViewport() {
+    if (!vv || overlay.getAttribute("data-open") !== "true") return;
+    overlay.style.setProperty("--term-vh", vv.height + "px");
+    overlay.style.setProperty("--term-top", vv.offsetTop + "px");
+    scrollEnd();
+  }
+  if (vv) {
+    vv.addEventListener("resize", fitViewport);
+    vv.addEventListener("scroll", fitViewport);
+  }
+
   function open() {
     if (overlay.getAttribute("data-open") === "true") return;
     lastFocus = document.activeElement;
     overlay.setAttribute("data-open", "true");
     launcher.setAttribute("aria-expanded", "true");
     document.body.setAttribute("data-term-open", "true");
+    fitViewport();
     setTimeout(function () { input.focus(); scrollEnd(); }, 20);
   }
   function close() {
     if (overlay.getAttribute("data-open") !== "true") return;
+    overlay.style.removeProperty("--term-vh");
+    overlay.style.removeProperty("--term-top");
     overlay.setAttribute("data-open", "false");
     launcher.setAttribute("aria-expanded", "false");
     document.body.removeAttribute("data-term-open");
