@@ -68,7 +68,7 @@
       key: "ujamaaflow",
       aliases: ["uf", "ujamaa", "ujamaa-flow"],
       name: "UjamaaFlow",
-      kind: "full product · flask",
+      kind: "team project · flask",
       live: "https://ujamaaflow-cock.onrender.com",
       code: "https://github.com/MelvinTabitha738/UjamaaFlow",
     },
