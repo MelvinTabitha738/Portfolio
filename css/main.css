@@ -673,6 +673,32 @@ kbd {
   .project-feature:nth-child(even) .project-media {
     order: 0;
   }
+  /* Stacked: name, then category line, then screenshot, then the details.
+     .project-body is flattened so its children can be ordered around the media. */
+  .project-feature {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .project-feature .project-body {
+    display: contents;
+  }
+  .project-feature .project-body > * {
+    order: 4;
+  }
+  .project-feature .project-body > h3 {
+    order: 1;
+  }
+  .project-feature .project-body > .project-kind {
+    order: 2;
+    margin-bottom: 16px;
+  }
+  .project-feature .project-media,
+  .project-feature:nth-child(even) .project-media {
+    order: 3;
+    margin-bottom: 20px;
+  }
 }
 
 /* ---- Project cards (secondary grid) ----------------------------------------- */
@@ -727,9 +753,9 @@ kbd {
 .project-card .project-links {
   font-size: 0.9rem;
 }
-/* Single column (below 2 × 290px + gap at 92vw): show the project name before
-   the screenshot. .body is flattened so its children can be ordered around the
-   thumbnail; its padding moves onto the children. */
+/* Single column (below 2 × 290px + gap at 92vw): show the project name and
+   category line before the screenshot. .body is flattened so its children can
+   be ordered around the thumbnail; its padding moves onto the children. */
 @media (max-width: 651px) {
   .project-card .body {
     display: contents;
@@ -738,11 +764,12 @@ kbd {
     order: 4;
     padding-inline: 22px;
   }
-  .project-card .body > .project-kind {
+  .project-card .body > h3 {
     order: 1;
     padding-top: 20px;
+    margin-bottom: 4px;
   }
-  .project-card .body > h3 {
+  .project-card .body > .project-kind {
     order: 2;
     margin-bottom: 14px;
   }
