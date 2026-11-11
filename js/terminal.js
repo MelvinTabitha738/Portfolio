@@ -593,8 +593,55 @@
     scrollEnd();
   }
 
+  /* ---- Key-click sound ------------------------------------------------------
+     A short filtered-noise burst per key typed into the terminal input. No
+     audio files; the AudioContext is created on the first keystroke, which
+     counts as the user gesture browsers require before playing audio. */
+  var AudioCtx = window.AudioContext || window.webkitAudioContext;
+  var audio = null;
+
+  function keyClick() {
+    if (!AudioCtx) return;
+    try {
+      if (!audio) audio = new AudioCtx();
+      if (audio.state === "suspended") audio.resume();
+    } catch (e) { return; }
+    var now = audio.currentTime;
+    var dur = 0.018 + Math.random() * 0.04;
+    var size = Math.max(1, Math.floor(audio.sampleRate * dur));
+    var buf = audio.createBuffer(1, size, audio.sampleRate);
+    var d = buf.getChannelData(0);
+    for (var i = 0; i < size; i++) {
+      d[i] = (Math.random() * 2 - 1) * (1 - i / size);
+    }
+    var src = audio.createBufferSource();
+    src.buffer = buf;
+    var filt = audio.createBiquadFilter();
+    filt.type = "bandpass";
+    filt.frequency.value = 900 + Math.random() * 1500;
+    filt.Q.value = 1.0;
+    var gain = audio.createGain();
+    gain.gain.setValueAtTime(0.0, now);
+    gain.gain.linearRampToValueAtTime(0.18 + Math.random() * 0.1, now + 0.001);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+    src.connect(filt);
+    filt.connect(gain);
+    gain.connect(audio.destination);
+    src.start(now);
+    src.stop(now + dur + 0.01);
+  }
+
+  // Characters, Backspace/Delete and Enter click; arrows, Tab, modifiers and
+  // shortcuts stay silent. "Unidentified"/"Process" cover mobile keyboards.
+  function isTypingKey(e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return false;
+    var k = e.key || "";
+    return k.length === 1 || /^(Backspace|Delete|Enter|Unidentified|Process)$/.test(k);
+  }
+
   /* ---- Events ----------------------------------------------------------- */
   input.addEventListener("keydown", function (e) {
+    if (isTypingKey(e)) keyClick();
     if (e.key === "Enter") {
       var v = input.value;
       input.value = "";

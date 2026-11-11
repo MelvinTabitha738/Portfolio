@@ -18,7 +18,7 @@ Live site: https://melvintabitha.vercel.app/
 - **Light and dark themes.** Dark by default. The chosen theme is applied before paint (so no flash) and stored in `localStorage`.
 - **Responsive layout.** Mobile nav drawer at narrow widths. Grids reflow down to 320px without horizontal overflow.
 - **Software-themed background.** A subtle code-rain effect in the hero that fades out behind the content and hides on small screens.
-- **Procedural keyboard-click sound.** Generated with the Web Audio API after the first user interaction (click, keypress or touch). No audio files loaded.
+- **Procedural keyboard-click sound.** Plays only while you type in the terminal, one click per key, generated with the Web Audio API. No audio files loaded.
 - **Accessible defaults.** Skip-link, semantic landmarks, visible focus states, ARIA on interactive controls, `prefers-reduced-motion` respected for animations.
 
 ## Tech stack
@@ -38,8 +38,8 @@ Live site: https://melvintabitha.vercel.app/
 ├── css/
 │   └── main.css            # Single stylesheet
 ├── js/
-│   ├── main.js             # Theme toggle, nav, code-rain, sound engine
-│   └── terminal.js         # Terminal panel behaviour
+│   ├── main.js             # Theme toggle, nav, code-rain
+│   └── terminal.js         # Terminal panel behaviour, key-click sound
 ├── projects/
 │   ├── index.html          # Projects index
 │   ├── anga-weather/       # Case study: Anga Weather
