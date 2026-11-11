@@ -111,6 +111,32 @@ def link(text, href):
     return f'<link href="{href}" color="#1f3b73"><u>{text}</u></link>'
 
 
+PORTFOLIO_URL = "https://melvintabitha.vercel.app/"
+
+
+def portfolio_footer(canvas, doc):
+    """Clickable link back to the portfolio, centred in the bottom margin of
+    every page, so a reader can return to the site from any page."""
+    label = "Back to portfolio: "
+    url_text = "melvintabitha.vercel.app"
+    size = 8.5
+    canvas.saveState()
+    w_label = canvas.stringWidth(label, "Times-Italic", size)
+    w_url = canvas.stringWidth(url_text, "Times-Italic", size)
+    x = (doc.pagesize[0] - w_label - w_url) / 2
+    y = 8 * mm
+    canvas.setFont("Times-Italic", size)
+    canvas.setFillColor(FAINT)
+    canvas.drawString(x, y, label)
+    canvas.setFillColor(LINK)
+    canvas.drawString(x + w_label, y, url_text)
+    canvas.setStrokeColor(LINK)
+    canvas.setLineWidth(0.4)
+    canvas.line(x + w_label, y - 1.2, x + w_label + w_url, y - 1.2)
+    canvas.linkURL(PORTFOLIO_URL, (x, y - 2, x + w_label + w_url, y + size), relative=0)
+    canvas.restoreState()
+
+
 # ---- Content ---------------------------------------------------------------
 NAME = "MELVIN TABITHA OPONDO"
 TAGLINE = "Full-Stack Software Developer"
@@ -527,7 +553,7 @@ def build_cv():
         author="Melvin Tabitha Opondo",
         subject="Full-Stack Software Developer",
     )
-    doc.build(story)
+    doc.build(story, onFirstPage=portfolio_footer, onLaterPages=portfolio_footer)
     print(f"Wrote {CV_PDF}  ({CV_PDF.stat().st_size} bytes)")
 
 
@@ -687,7 +713,7 @@ def build_resume():
         author="Melvin Tabitha Opondo",
         subject="Full-Stack Software Developer",
     )
-    doc.build(story)
+    doc.build(story, onFirstPage=portfolio_footer, onLaterPages=portfolio_footer)
     print(f"Wrote {RESUME_PDF}  ({RESUME_PDF.stat().st_size} bytes)")
 
 
