@@ -572,7 +572,7 @@ def build_cv():
 # ---- Resume document (concise, single column, same serif look) -------------
 RESUME_FEATURED = [
     "Anga", "StudyBuddy", "CallShield", "SmartHunt", "UjamaaFlow",
-    "Master Photography", "Developer Portfolio",
+    "Master Photography", "Developer Portfolio", "Weatherfusion",
 ]
 
 def resume_project_bullet(p):
@@ -631,6 +631,13 @@ def resume_project_bullet(p):
             "framework or build step: an interactive terminal, light and "
             "dark themes, accessible defaults, and SEO foundations. "
             "Deployed on Vercel."
+        ),
+        "Weatherfusion": (
+            "Django weather application showing current conditions and "
+            "forecasts from the OpenWeatherMap API for any city, with a "
+            "conversational assistant on Groq&rsquo;s Llama 3.1 that answers "
+            "from the live readings for the requested city. Deployed on "
+            "Render."
         ),
     }
     key = next(k for k in short if k in full)

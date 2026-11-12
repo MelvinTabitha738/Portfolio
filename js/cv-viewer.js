@@ -9,7 +9,7 @@
   // Bump a version here whenever its PDF is regenerated.
   var DOCS = {
     cv: { file: "Melvin-Tabitha-CV.pdf", v: 6, title: "CV" },
-    resume: { file: "Melvin-Tabitha-Resume.pdf", v: 5, title: "Resume" },
+    resume: { file: "Melvin-Tabitha-Resume.pdf", v: 6, title: "Resume" },
   };
   var WORKER = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
   var FONTS = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/standard_fonts/";
