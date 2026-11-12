@@ -6,6 +6,7 @@ Run from anywhere with ReportLab installed:  python tools/generate_cv.py
 Both PDFs are written to cv/ at the repository root.
 """
 
+import secrets
 from pathlib import Path
 
 from reportlab.lib.pagesizes import A4
@@ -13,6 +14,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import mm
 from reportlab.lib.colors import HexColor, black
 from reportlab.lib.enums import TA_LEFT, TA_JUSTIFY
+from reportlab.lib.pdfencrypt import StandardEncryption
 from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, HRFlowable,
     KeepTogether, ListFlowable, ListItem,
@@ -112,6 +114,15 @@ def link(text, href):
 
 
 PORTFOLIO_URL = "https://melvintabitha.vercel.app/"
+
+
+def read_only():
+    """Lock the PDF against editing. Opening, printing and copying text stay
+    allowed so recruiters and ATS parsers can still read it."""
+    return StandardEncryption(
+        "", ownerPassword=secrets.token_hex(16),
+        canPrint=1, canModify=0, canCopy=1, canAnnotate=0,
+    )
 
 
 def portfolio_footer(canvas, doc):
@@ -552,6 +563,7 @@ def build_cv():
         title="Melvin Tabitha Opondo, CV",
         author="Melvin Tabitha Opondo",
         subject="Full-Stack Software Developer",
+        encrypt=read_only(),
     )
     doc.build(story, onFirstPage=portfolio_footer, onLaterPages=portfolio_footer)
     print(f"Wrote {CV_PDF}  ({CV_PDF.stat().st_size} bytes)")
@@ -712,6 +724,7 @@ def build_resume():
         title="Melvin Tabitha Opondo, Resume",
         author="Melvin Tabitha Opondo",
         subject="Full-Stack Software Developer",
+        encrypt=read_only(),
     )
     doc.build(story, onFirstPage=portfolio_footer, onLaterPages=portfolio_footer)
     print(f"Wrote {RESUME_PDF}  ({RESUME_PDF.stat().st_size} bytes)")

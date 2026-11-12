@@ -17,7 +17,7 @@
   var _src = (document.currentScript && document.currentScript.src) || "";
   var SITE_ROOT = _src.split("?")[0].replace(/\/js\/terminal\.js$/, "/") || "./";
 
-  var CV_URL = SITE_ROOT + "cv/Melvin-Tabitha-CV.pdf?v=5";
+  var CV_URL = SITE_ROOT + "cv/Melvin-Tabitha-CV.pdf?v=6";
 
   /* ---- Static project + link data (kept in sync with the HTML) ----------- */
   var LINKS = {
@@ -318,8 +318,8 @@
           .then(function (res) {
             var type = (res.headers.get("content-type") || "").toLowerCase();
             if (res.ok && type.indexOf("pdf") !== -1) {
-              html("Opening " + link(CV_URL, "Melvin-Tabitha-CV.pdf", true) + "…", "ok");
-              window.open(CV_URL, "_blank", "noopener");
+              html("Opening " + link(CV_URL, "Melvin-Tabitha-CV.pdf", false) + "…", "ok");
+              window.location.href = CV_URL;
             } else {
               line("CV not yet uploaded. The file lands at " + CV_URL + " when I drop it in.", "err");
             }
