@@ -1,6 +1,8 @@
 /* Melvin Tabitha — CV / resume viewer
-   Renders the PDF pages with PDF.js so the document reads the same on phones,
-   where browsers won't show a PDF inline, with Back and Download always in view. */
+   Keeps Back and Download in view above the document. Desktop browsers show
+   the PDF in their own viewer, exactly as the file looks. Phones can't show a
+   PDF inline, so there PDF.js draws the pages, with a Times-equivalent font
+   because the PDF uses Times without embedding it. */
 (function () {
   "use strict";
 
@@ -10,6 +12,7 @@
     resume: { file: "Melvin-Tabitha-Resume.pdf", v: 5, title: "Resume" },
   };
   var WORKER = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  var FONTS = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/standard_fonts/";
 
   var params = new URLSearchParams(window.location.search);
   var doc = DOCS[params.get("doc")] || DOCS.cv;
@@ -43,6 +46,21 @@
     statusEl.append(a, ".");
   }
 
+  /* ---- Desktop: the browser's own PDF viewer --------------------------- */
+  var nativePdf = navigator.pdfViewerEnabled === true &&
+    window.matchMedia && window.matchMedia("(pointer: fine)").matches;
+  if (nativePdf) {
+    var frame = document.createElement("iframe");
+    frame.className = "cv-frame";
+    frame.src = url;
+    frame.title = doc.title;
+    document.body.classList.add("cv-native");
+    statusEl.hidden = true;
+    pagesEl.appendChild(frame);
+    return;
+  }
+
+  /* ---- Phones: PDF.js ---------------------------------------------------- */
   var lib = window.pdfjsLib;
   if (!lib) return fail();
   lib.GlobalWorkerOptions.workerSrc = WORKER;
@@ -109,7 +127,8 @@
     });
   }
 
-  lib.getDocument(url).promise
+  // useSystemFonts off: never fall back to whatever serif the phone has.
+  lib.getDocument({ url: url, standardFontDataUrl: FONTS, useSystemFonts: false }).promise
     .then(function (loaded) { pdf = loaded; return renderAll(); })
     .catch(fail);
 
