@@ -1750,3 +1750,78 @@ body[data-term-open="true"] {
   }
 }
 
+
+/* ---- CV / resume viewer (cv/index.html) ------------------------------------ */
+.cv-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--header-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding-top: env(safe-area-inset-top);
+}
+.cv-bar-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px max(16px, env(safe-area-inset-left));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.cv-bar .btn {
+  padding: 10px 16px;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+.cv-title {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.cv-pages {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px calc(40px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.cv-status {
+  color: var(--muted);
+  text-align: center;
+  margin: 40px 0;
+}
+.cv-sheet {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+.cv-sheet canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cv-link {
+  position: absolute;
+  border-radius: 2px;
+}
+.cv-link:hover,
+.cv-link:focus-visible {
+  background: rgba(242, 163, 60, 0.18);
+}
+@media (max-width: 520px) {
+  .cv-title { display: none; }
+  .cv-pages { padding-top: 16px; gap: 14px; }
+}
+@media (max-width: 360px) {
+  .cv-bar .btn { padding: 9px 12px; font-size: 0.86rem; gap: 6px; }
+}

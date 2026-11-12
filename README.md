@@ -10,7 +10,7 @@ Live site: https://melvintabitha.vercel.app/
 - Case-study pages for selected projects (Anga Weather, StudyBuddy).
 - A `/projects` index page.
 - A custom 404 page.
-- A `cv/` folder with a downloadable CV and a one-page resume (both PDF).
+- A `cv/` folder with a CV and a one-page resume (both PDF, locked against editing), shown in a viewer page with Back to portfolio and Download buttons.
 - SEO basics: canonical URL, sitemap, robots, structured data, Open Graph tags.
 
 ## Features
@@ -39,12 +39,14 @@ Live site: https://melvintabitha.vercel.app/
 │   └── main.css            # Single stylesheet
 ├── js/
 │   ├── main.js             # Theme toggle, nav, code-rain
-│   └── terminal.js         # Terminal panel behaviour, key-click sound
+│   ├── terminal.js         # Terminal panel behaviour, key-click sound
+│   └── cv-viewer.js        # Renders the CV/resume pages (PDF.js)
 ├── projects/
 │   ├── index.html          # Projects index
 │   ├── anga-weather/       # Case study: Anga Weather
 │   └── studybuddy/         # Case study: StudyBuddy
 ├── cv/
+│   ├── index.html          # CV / resume viewer (?doc=cv or ?doc=resume)
 │   ├── Melvin-Tabitha-CV.pdf
 │   └── Melvin-Tabitha-Resume.pdf
 ├── tools/
