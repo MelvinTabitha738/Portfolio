@@ -888,9 +888,18 @@ kbd {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-@media (max-width: 400px) {
-  .facts-grid {
-    grid-template-columns: 1fr;
+/* Phones keep two columns; cells and text tighten so long values wrap
+   neatly inside the narrower cells. */
+@media (max-width: 480px) {
+  .fact {
+    padding: 1.1rem 0.6rem;
+  }
+  .fact dt {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+  }
+  .fact dd {
+    font-size: 1rem;
   }
 }
 
@@ -2447,9 +2456,6 @@ body[data-term-open="true"] {
     min-height: 48px;
     padding: 0 1.1rem;
     letter-spacing: 0.1em;
-  }
-  .facts-grid {
-    grid-template-columns: 1fr;
   }
 }
 
