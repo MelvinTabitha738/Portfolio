@@ -18,17 +18,6 @@
         toggle.setAttribute("aria-expanded", "false");
       }
     });
-    // Close the dropdown when tapping anywhere outside it
-    document.addEventListener("click", function (e) {
-      if (
-        nav.classList.contains("open") &&
-        !nav.contains(e.target) &&
-        !toggle.contains(e.target)
-      ) {
-        nav.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
-      }
-    });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && nav.classList.contains("open")) {
         nav.classList.remove("open");

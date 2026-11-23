@@ -384,61 +384,50 @@ kbd {
   .nav-toggle {
     display: inline-flex;
   }
-  /* A compact dropdown card under the menu button, sized to its links.
-     Closed, it is clipped away in place (never moved off-screen, which would
-     widen the page and make phones zoom out). */
   .site-nav {
     position: absolute;
-    top: calc(100% + 8px);
-    right: var(--gutter);
-    width: min(290px, calc(100% - 2 * var(--gutter)));
-    max-height: calc(100vh - var(--header-h) - 24px);
-    max-height: calc(100dvh - var(--header-h) - 24px);
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: calc(100vh - var(--header-h));
+    height: calc(100dvh - var(--header-h));
     flex-direction: column;
     align-items: stretch;
-    gap: 2px;
-    padding: 10px 10px 14px;
+    gap: 0;
+    padding: 20px var(--gutter) 40px;
     background: var(--nav-panel-bg);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    box-shadow: var(--shadow-panel);
+    border-top: 1px solid var(--border);
     overflow-y: auto;
-    clip-path: inset(0 0 100% 0 round 18px);
-    opacity: 0;
+    /* Closed, the panel is clipped away in place rather than moved off the
+       right edge: anything parked off-screen widens the page, and phones then
+       zoom the whole site out. clip-path slides it in without that. */
+    clip-path: inset(0 0 0 100%);
     visibility: hidden;
-    transition: clip-path 0.45s var(--ease), opacity 0.3s ease,
-      visibility 0s linear 0.45s;
+    transition: clip-path 0.6s var(--ease), visibility 0s linear 0.6s;
   }
   .site-nav.open {
-    clip-path: inset(0 0 0 0 round 18px);
-    opacity: 1;
+    clip-path: inset(0 0 0 0);
     visibility: visible;
-    transition: clip-path 0.45s var(--ease), opacity 0.3s ease, visibility 0s;
+    transition: clip-path 0.6s var(--ease), visibility 0s;
   }
   .site-nav a {
-    font-family: var(--sans);
-    font-size: 1rem;
+    font-family: var(--serif);
+    font-size: 1.65rem;
     font-weight: 500;
-    letter-spacing: 0.01em;
-    padding: 11px 14px;
-    border-radius: 10px;
-  }
-  .site-nav a:hover,
-  .site-nav a.active {
-    background: var(--accent-soft);
+    letter-spacing: -0.01em;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
   }
   .site-nav a::after {
     display: none;
   }
   .site-nav .nav-cv {
-    margin: 10px 4px 0;
-    padding: 13px 20px;
+    margin: 28px 0 0;
+    padding: 16px 24px;
     text-align: center;
-    font-size: 0.8rem;
-  }
-  .site-nav .nav-cv:hover,
-  .site-nav .nav-cv.active {
-    background: var(--accent-bright);
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    border-bottom: 0;
   }
   .site-nav .nav-cv::before,
   .site-nav .nav-cv::after {
