@@ -259,6 +259,17 @@
     });
   }
 
+  /* ---- Hero in view ---------------------------------------------------------
+     While the homepage hero is on screen, <body> carries .hero-in-view. On
+     phones the CSS uses it to tuck the terminal launcher away so it never
+     sits on top of the hero buttons pinned to the bottom of the screen. */
+  var heroEl = document.querySelector(".hero");
+  if (heroEl && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      document.body.classList.toggle("hero-in-view", entries[0].isIntersecting);
+    }, { threshold: 0.15 }).observe(heroEl);
+  }
+
   /* ---- Footer year ------------------------------------------------------------ */
   var year = document.getElementById("year");
   if (year) year.textContent = String(new Date().getFullYear());

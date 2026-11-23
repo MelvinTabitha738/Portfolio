@@ -488,12 +488,22 @@ kbd {
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: clamp(2rem, 5vw, 5rem);
   align-items: center;
-  padding-block: clamp(2.5rem, 5vw, 4.5rem);
-  min-height: calc(min(100svh, 820px) - var(--header-h));
+  padding-top: clamp(1.5rem, 4svh, 3.5rem);
+  min-height: calc(100svh - var(--header-h));
 }
+/* The text column runs the full height of the first screen: the intro sits
+   in the space above, and the buttons rest on the bottom edge. On screens too
+   short for everything, the buttons stay pinned to the bottom of the window
+   until the hero scrolls away. */
 .hero-content {
-  align-self: center;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   animation: hero-rise 1s var(--ease) both;
+}
+.hero-content > .hero-kicker {
+  margin-top: auto;
 }
 .hero-kicker {
   display: inline-flex;
@@ -517,7 +527,7 @@ kbd {
   box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
 }
 .hero h1 {
-  font-size: clamp(2.75rem, 5vw, 4.5rem);
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
   font-weight: 500;
   line-height: 1.05;
   white-space: nowrap;
@@ -555,6 +565,13 @@ kbd {
   display: flex;
   flex-wrap: wrap;
   gap: 0.875rem;
+  align-self: stretch;
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  padding: 1.25rem 0 calc(clamp(0.75rem, 2svh, 1.25rem) - 5px);
+  background: linear-gradient(to top, var(--hero-bg) 80%, transparent);
 }
 .hero-actions .btn {
   padding: 0 1.5rem;
@@ -563,7 +580,8 @@ kbd {
   position: relative;
   justify-self: center;
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
+  margin-block: 1.5rem 2.5rem;
   animation: hero-fade 1.2s 0.15s var(--ease) both;
 }
 .hero-media::before {
@@ -695,11 +713,15 @@ kbd {
     gap: 1rem;
     text-align: left;
     padding-top: 2.5rem;
-    padding-bottom: 3rem;
+    padding-bottom: 1.5rem;
     align-items: center;
   }
   .hero-content {
     display: contents;
+  }
+  .hero-kicker,
+  .hero-content > .hero-kicker {
+    margin-top: 0;
   }
   .hero-kicker {
     order: 1;
@@ -732,11 +754,15 @@ kbd {
   .hero .lede {
     order: 6;
     padding-left: 1.1rem;
-    margin: 0.75rem 0 1rem;
+    margin: 0.75rem 0 0.5rem;
   }
+  /* Pinned to the bottom of the screen while the hero is in view, so the
+     buttons are visible before any scrolling; they settle under the intro. */
   .hero-actions {
     order: 7;
     justify-content: flex-start;
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 0.875rem var(--gutter) calc(0.5rem - 5px + env(safe-area-inset-bottom));
   }
   .hero-seal {
     left: -8px;
@@ -2270,6 +2296,17 @@ kbd {
   .term-input-row .ps .ps-host,
   .term-echo .ps .ps-host {
     display: none;
+  }
+}
+
+/* Phones: hide the launcher while the homepage hero (and its pinned buttons)
+   fills the screen; it returns as soon as the visitor scrolls on. */
+@media (max-width: 860px) {
+  .hero-in-view .term-launcher {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
   }
 }
 
