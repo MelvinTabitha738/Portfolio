@@ -69,6 +69,7 @@
   --header-bg: rgba(252, 248, 245, 0.9);
   --home-header-bg: rgba(235, 223, 223, 0.86);
   --nav-panel-bg: #fcf8f5;
+  --nav-glass: rgba(252, 248, 245, 0.9);
   --overlay-bg: rgba(42, 18, 32, 0.42);
   --grid-dot: rgba(94, 42, 65, 0.09);
   --shadow-fact: 0 24px 60px -36px rgba(61, 26, 43, 0.3);
@@ -118,6 +119,7 @@
   --header-bg: rgba(26, 18, 21, 0.88);
   --home-header-bg: rgba(38, 25, 34, 0.88);
   --nav-panel-bg: #1a1215;
+  --nav-glass: rgba(26, 18, 21, 0.92);
   --overlay-bg: rgba(5, 3, 4, 0.62);
   --grid-dot: rgba(235, 223, 223, 0.1);
   --shadow-fact: 0 24px 60px -36px rgba(0, 0, 0, 0.8);
@@ -362,6 +364,9 @@ kbd {
   100% { opacity: 0; transform: scale(1.22, 1.75); }
 }
 
+.nav-social {
+  display: none;
+}
 .nav-toggle {
   order: 4;
   display: none;
@@ -384,6 +389,42 @@ kbd {
   .nav-toggle {
     display: inline-flex;
   }
+  /* Menu icon: the three lines fold into a cross while the menu is open. */
+  .nav-toggle line {
+    transition: transform 0.4s var(--ease), opacity 0.25s ease;
+  }
+  .nav-toggle line:nth-child(1) { transform-origin: 12px 6px; }
+  .nav-toggle line:nth-child(3) { transform-origin: 12px 18px; }
+  .nav-toggle[aria-expanded="true"] line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .nav-toggle[aria-expanded="true"] line:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-toggle[aria-expanded="true"] line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+  .nav-toggle[aria-expanded="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  /* While open: the page behind stops scrolling, and the bar turns solid so
+     the panel's own frosted glass can blur the page beneath it. */
+  html.nav-open,
+  html.nav-open body {
+    overflow: hidden;
+  }
+  html.nav-open .site-header {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--nav-panel-bg);
+  }
+
+  /* Full-screen panel under the bar. Closed, it is clipped away in place
+     (never moved off-screen, which would widen the page and make phones
+     zoom out); opening slides it in from the right. */
   .site-nav {
     position: absolute;
     top: 100%;
@@ -394,13 +435,12 @@ kbd {
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    padding: 20px var(--gutter) 40px;
-    background: var(--nav-panel-bg);
+    padding: 18px var(--gutter) calc(28px + env(safe-area-inset-bottom));
+    background: var(--nav-glass);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    backdrop-filter: blur(18px) saturate(1.2);
     border-top: 1px solid var(--border);
     overflow-y: auto;
-    /* Closed, the panel is clipped away in place rather than moved off the
-       right edge: anything parked off-screen widens the page, and phones then
-       zoom the whole site out. clip-path slides it in without that. */
     clip-path: inset(0 0 0 100%);
     visibility: hidden;
     transition: clip-path 0.6s var(--ease), visibility 0s linear 0.6s;
@@ -410,23 +450,68 @@ kbd {
     visibility: visible;
     transition: clip-path 0.6s var(--ease), visibility 0s;
   }
+
+  /* Links: large serif, sliding in one after another. */
+  .site-nav > a,
+  .site-nav > .nav-social {
+    opacity: 0;
+    transform: translateX(28px);
+    transition: opacity 0.45s ease, transform 0.6s var(--ease),
+      color 0.3s var(--ease), padding 0.3s var(--ease);
+  }
+  .site-nav.open > a,
+  .site-nav.open > .nav-social {
+    opacity: 1;
+    transform: none;
+  }
+  .site-nav.open > :nth-child(1) { transition-delay: 0.12s, 0.12s, 0s, 0s; }
+  .site-nav.open > :nth-child(2) { transition-delay: 0.17s, 0.17s, 0s, 0s; }
+  .site-nav.open > :nth-child(3) { transition-delay: 0.22s, 0.22s, 0s, 0s; }
+  .site-nav.open > :nth-child(4) { transition-delay: 0.27s, 0.27s, 0s, 0s; }
+  .site-nav.open > :nth-child(5) { transition-delay: 0.32s, 0.32s, 0s, 0s; }
+  .site-nav.open > :nth-child(6) { transition-delay: 0.37s, 0.37s, 0s, 0s; }
+  .site-nav.open > :nth-child(7) { transition-delay: 0.42s, 0.42s, 0s, 0s; }
+
   .site-nav a {
     font-family: var(--serif);
-    font-size: 1.65rem;
+    font-size: 1.75rem;
     font-weight: 500;
     letter-spacing: -0.01em;
-    padding: 12px 0;
+    padding: 14px 0;
     border-bottom: 1px solid var(--border);
   }
-  .site-nav a::after {
-    display: none;
+  /* Current page or section: plum, with a short amber line before it. */
+  .site-nav > a:not(.nav-cv)::after {
+    display: block;
+    top: 50%;
+    bottom: auto;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gold-line);
+    transition: width 0.4s var(--ease);
   }
+  .site-nav > a.active:not(.nav-cv) {
+    color: var(--accent);
+    padding-left: 30px;
+  }
+  .site-nav > a.active:not(.nav-cv)::after {
+    width: 18px;
+  }
+  .site-nav > a:not(.nav-cv):hover::after {
+    width: 0;
+  }
+  .site-nav > a.active:not(.nav-cv):hover::after {
+    width: 18px;
+  }
+
   .site-nav .nav-cv {
-    margin: 28px 0 0;
+    margin: 30px 0 0;
     padding: 16px 24px;
     text-align: center;
     font-family: var(--sans);
     font-size: 0.85rem;
+    letter-spacing: 0.14em;
     border-bottom: 0;
   }
   .site-nav .nav-cv::before,
@@ -437,11 +522,62 @@ kbd {
   .site-nav:not(.open) .nav-cv::after {
     animation: none;
   }
+  /* The pill is full width here, so its ripple grows mostly in height and
+     stays inside the panel. */
+  .site-nav.open .nav-cv::before,
+  .site-nav.open .nav-cv::after {
+    animation-name: nav-ripple-wide;
+  }
+  @keyframes nav-ripple-wide {
+    0% { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.03, 1.45); }
+  }
+  /* The floating terminal button would sit on the contact icons. */
+  html.nav-open .term-launcher {
+    display: none;
+  }
+
+  /* Contact icons at the foot of the panel. */
+  .site-nav > .nav-social {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: auto;
+    padding-top: 28px;
+  }
+  .nav-social a {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 1px solid var(--border-strong);
+    border-bottom: 1px solid var(--border-strong);
+    border-radius: 50%;
+    color: var(--accent);
+    transition: background 0.3s var(--ease), color 0.3s var(--ease),
+      border-color 0.3s var(--ease);
+  }
+  .nav-social a::after {
+    display: none;
+  }
+  .nav-social a:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
 }
 @media (max-width: 900px) and (prefers-reduced-motion: reduce) {
   .site-nav,
-  .site-nav.open {
+  .site-nav.open,
+  .site-nav > a,
+  .site-nav > .nav-social,
+  .nav-toggle line {
     transition: none;
+  }
+  .site-nav > a,
+  .site-nav > .nav-social {
+    transform: none;
   }
 }
 

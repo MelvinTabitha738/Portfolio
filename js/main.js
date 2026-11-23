@@ -3,28 +3,36 @@
 (function () {
   "use strict";
 
-  /* ---- Mobile navigation ------------------------------------------------ */
+  /* ---- Mobile navigation ------------------------------------------------
+     Full-screen panel on phones. While it is open, <html> carries .nav-open:
+     the page behind stops scrolling and the menu icon turns into a cross. */
   var toggle = document.querySelector(".nav-toggle");
   var nav = document.querySelector(".site-nav");
   if (toggle && nav) {
-    toggle.addEventListener("click", function () {
-      var open = nav.classList.toggle("open");
+    var setOpen = function (open) {
+      nav.classList.toggle("open", open);
       toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Menu");
+      document.documentElement.classList.toggle("nav-open", open);
+    };
+    toggle.addEventListener("click", function () {
+      setOpen(!nav.classList.contains("open"));
     });
     // Close the panel after choosing a link (mobile)
     nav.addEventListener("click", function (e) {
-      if (e.target.closest("a")) {
-        nav.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
-      }
+      if (e.target.closest("a")) setOpen(false);
     });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && nav.classList.contains("open")) {
-        nav.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
+        setOpen(false);
         toggle.focus();
       }
     });
+    // If the window grows past the phone layout, drop the open state
+    var desk = window.matchMedia("(min-width: 901px)");
+    var onDesk = function (e) { if (e.matches) setOpen(false); };
+    if (desk.addEventListener) desk.addEventListener("change", onDesk);
+    else if (desk.addListener) desk.addListener(onDesk);
   }
 
   /* ---- Scroll-spy: highlight the section currently in view --------------- */
