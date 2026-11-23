@@ -686,14 +686,14 @@ kbd {
   }
 }
 
-/* Phones and small tablets: one centred column. The name comes first, then the
-   portrait, then the introduction and the buttons. */
+/* Phones and small tablets: one column, text aligned left. The name comes
+   first, then the portrait, then the introduction and the buttons. */
 @media (max-width: 860px) {
   .hero-inner {
     grid-template-columns: 1fr;
     min-height: 0;
     gap: 1rem;
-    text-align: center;
+    text-align: left;
     padding-top: 2.5rem;
     padding-bottom: 3rem;
     align-items: center;
@@ -703,7 +703,7 @@ kbd {
   }
   .hero-kicker {
     order: 1;
-    justify-self: center;
+    justify-self: start;
     font-size: 0.8125rem;
     letter-spacing: 0.16em;
   }
@@ -716,8 +716,8 @@ kbd {
   }
   .role-line {
     order: 3;
-    justify-content: center;
-    justify-self: center;
+    justify-content: flex-start;
+    justify-self: start;
     margin: 0;
   }
   .hero-media {
@@ -727,25 +727,16 @@ kbd {
   }
   .hero .strap {
     order: 5;
-    margin: 0.5rem auto 0;
+    margin: 0.5rem 0 0;
   }
   .hero .lede {
     order: 6;
-    border-left: 0;
-    padding-left: 0;
-    margin: 0.25rem auto 0.75rem;
-  }
-  .hero .lede::before {
-    content: "";
-    display: block;
-    width: 48px;
-    height: 2px;
-    background: var(--gold-line);
-    margin: 0.75rem auto 1.25rem;
+    padding-left: 1.1rem;
+    margin: 0.75rem 0 1rem;
   }
   .hero-actions {
     order: 7;
-    justify-content: center;
+    justify-content: flex-start;
   }
   .hero-seal {
     left: -8px;
@@ -758,9 +749,29 @@ kbd {
     inset: -12px -12px 12px 12px;
   }
 }
+/* Small screens: buttons keep their natural width and wrap as a
+   left-aligned group, scaled down a step so two sit side by side on a phone.
+   Section intros align left so every line starts at the same edge. */
 @media (max-width: 600px) {
+  .section-head .section-intro {
+    text-align: left;
+  }
+  .hero-actions {
+    gap: 10px;
+  }
   .hero-actions .btn {
-    flex: 1 1 100%;
+    flex: 0 1 auto;
+    min-height: 46px;
+    padding: 0 1.15rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 340px) {
+  .hero-actions .btn {
+    padding: 0 0.9rem;
+    letter-spacing: 0.06em;
   }
 }
 @media (prefers-reduced-motion: reduce) {
