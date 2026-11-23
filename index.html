@@ -6,7 +6,7 @@
   <title>Melvin Tabitha — Software Developer</title>
   <meta name="description" content="Melvin Tabitha is a software developer in Kenya building full-stack web applications with Django, React and PostgreSQL: APIs, integrations and deployment, plus technical SEO for businesses.">
   <link rel="canonical" href="https://melvintabitha.vercel.app/">
-  <meta name="theme-color" content="#0b0e13">
+  <meta name="theme-color" content="#fcf8f5">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Melvin Tabitha — Software Developer">
   <meta property="og:description" content="Full-stack web applications with Django, React and PostgreSQL, plus technical SEO. See the projects, read the case studies.">
@@ -14,27 +14,22 @@
   <meta property="og:image" content="https://melvintabitha.vercel.app/assets/img/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="preload" href="assets/fonts/manrope-latin-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/jetbrains-mono-latin-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/main.css?v=16">
+  <link rel="preload" href="assets/fonts/playfair-display-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/dm-sans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/main.css?v=18">
   <script>document.documentElement.classList.replace("no-js","js");</script>
   <script>
     /* Apply the chosen theme before paint so the page never flashes the wrong
-       colours. Reads the visitor's saved choice, then falls back to their OS
-       preference, then to dark. Mirrored on every page in this site. */
+       colours. Reads the visitor's saved choice, then falls back to light. Mirrored on every page in this site. */
     (function () {
-      var theme = "dark";
+      var theme = "light";
       try {
         var saved = localStorage.getItem("melvin.theme");
-        theme = saved || (
-          window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches
-            ? "light"
-            : "dark"
-        );
+        if (saved === "dark" || saved === "light") theme = saved;
       } catch (e) {}
       document.documentElement.setAttribute("data-theme", theme);
       var m = document.querySelector('meta[name="theme-color"]');
-      if (m) m.setAttribute("content", theme === "light" ? "#f8f7f4" : "#0b0e13");
+      if (m) m.setAttribute("content", theme === "dark" ? "#1a1215" : "#fcf8f5");
     })();
   </script>
   <script type="application/ld+json">
@@ -55,13 +50,13 @@
   }
   </script>
 </head>
-<body>
+<body class="home">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
     <div class="container">
       <a class="wordmark" href="index.html"><span class="tilde">~/</span>melvin-tabitha</a>
-      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light mode" title="Switch to light mode">
+      <button class="theme-toggle" type="button" aria-pressed="true" aria-label="Switch to dark mode" title="Switch to dark mode">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
@@ -73,8 +68,8 @@
         <a href="#skills">Skills</a>
         <a href="#services">Services</a>
         <a href="#about">About</a>
-        <a href="#cv">CV</a>
         <a href="#contact">Contact</a>
+        <a class="nav-cv" href="#cv">CV</a>
       </nav>
     </div>
   </header>
@@ -83,206 +78,10 @@
 
     <!-- ================= Hero ================= -->
     <section class="hero" aria-label="Introduction">
-      <div class="code-rain" aria-hidden="true">
-        <div class="code-rain-col code-rain-col-1"><pre>// anga/js/weather.js
-const CACHE_TTL = 15 * 60 * 1000;
-const keys = loadKeys();
-
-async function fetchWeather(lat, lon) {
-  const hit = await cache.get(key(lat, lon));
-  if (hit && !isStale(hit)) return hit;
-
-  const apiKey = keys.pick(usage);
-  const url = `${API}?lat=${lat}&lon=${lon}&key=${apiKey}`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    if (res.status === 429) rotateKey();
-    throw new WeatherError(res.status);
-  }
-
-  const data = await res.json();
-  await cache.set(key(lat, lon), data, CACHE_TTL);
-  usage.increment(apiKey);
-  return data;
-}
-
-function pickKey(usage) {
-  return keys
-    .filter(k =&gt; usage.get(k) &lt; QUOTA)
-    .sort((a, b) =&gt; usage.get(a) - usage.get(b))[0];
-}
-
-export { fetchWeather, pickKey };
-// anga/js/weather.js
-const CACHE_TTL = 15 * 60 * 1000;
-const keys = loadKeys();
-
-async function fetchWeather(lat, lon) {
-  const hit = await cache.get(key(lat, lon));
-  if (hit && !isStale(hit)) return hit;
-
-  const apiKey = keys.pick(usage);
-  const url = `${API}?lat=${lat}&lon=${lon}&key=${apiKey}`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    if (res.status === 429) rotateKey();
-    throw new WeatherError(res.status);
-  }
-
-  const data = await res.json();
-  await cache.set(key(lat, lon), data, CACHE_TTL);
-  usage.increment(apiKey);
-  return data;
-}
-
-function pickKey(usage) {
-  return keys
-    .filter(k =&gt; usage.get(k) &lt; QUOTA)
-    .sort((a, b) =&gt; usage.get(a) - usage.get(b))[0];
-}
-
-export { fetchWeather, pickKey };</pre></div>
-        <div class="code-rain-col code-rain-col-2"><pre># studybuddy/tutor/views.py
-from django.views.decorators.http import require_POST
-from .retriever import retrieve_passages
-from .llm import call_llm, verify_citations
-
-@require_POST
-@login_required
-def ask_tutor(request):
-    q = request.POST.get("question", "").strip()
-    if not q:
-        return JsonResponse(
-            {"error": "empty_question"}, status=400
-        )
-
-    notes = Note.objects.filter(owner=request.user)
-    passages = retrieve_passages(q, notes, k=4)
-
-    answer, cites = call_llm(q, passages)
-    if not verify_citations(answer, cites):
-        return JsonResponse({
-            "answer": "I could not find that in your notes.",
-            "citations": [],
-            "confidence": "low",
-        })
-
-    return JsonResponse({
-        "answer": answer,
-        "citations": [c.id for c in cites],
-        "confidence": "high",
-    })
-# studybuddy/tutor/views.py
-from django.views.decorators.http import require_POST
-from .retriever import retrieve_passages
-from .llm import call_llm, verify_citations
-
-@require_POST
-@login_required
-def ask_tutor(request):
-    q = request.POST.get("question", "").strip()
-    if not q:
-        return JsonResponse(
-            {"error": "empty_question"}, status=400
-        )
-
-    notes = Note.objects.filter(owner=request.user)
-    passages = retrieve_passages(q, notes, k=4)
-
-    answer, cites = call_llm(q, passages)
-    if not verify_citations(answer, cites):
-        return JsonResponse({
-            "answer": "I could not find that in your notes.",
-            "citations": [],
-            "confidence": "low",
-        })
-
-    return JsonResponse({
-        "answer": answer,
-        "citations": [c.id for c in cites],
-        "confidence": "high",
-    })</pre></div>
-        <div class="code-rain-col code-rain-col-3"><pre>// portfolio/js/terminal.js
-const commands = {
-  whoami: {
-    summary: "print identity",
-    run() {
-      return "melvin · software developer";
-    },
-  },
-  theme: {
-    summary: "toggle color scheme",
-    run(args) {
-      const next = args[0] || cycle(current());
-      const root = document.documentElement;
-      root.setAttribute("data-theme", next);
-      try {
-        localStorage.setItem("melvin.theme", next);
-      } catch (e) {}
-      syncMeta(next);
-      syncToggleButton(next);
-      return `theme → ${next}`;
-    },
-  },
-  projects: {
-    summary: "list case studies",
-    run() {
-      return PROJECTS
-        .map(p =&gt; `  ${p.slug.padEnd(16)} ${p.title}`)
-        .join("\n");
-    },
-  },
-};
-
-export function dispatch(line) {
-  const [name, ...args] = tokenize(line);
-  const handler = commands[name];
-  if (!handler) return `command not found: ${name}`;
-  return handler.run(args);
-}
-// portfolio/js/terminal.js
-const commands = {
-  whoami: {
-    summary: "print identity",
-    run() {
-      return "melvin · software developer";
-    },
-  },
-  theme: {
-    summary: "toggle color scheme",
-    run(args) {
-      const next = args[0] || cycle(current());
-      const root = document.documentElement;
-      root.setAttribute("data-theme", next);
-      try {
-        localStorage.setItem("melvin.theme", next);
-      } catch (e) {}
-      syncMeta(next);
-      syncToggleButton(next);
-      return `theme → ${next}`;
-    },
-  },
-  projects: {
-    summary: "list case studies",
-    run() {
-      return PROJECTS
-        .map(p =&gt; `  ${p.slug.padEnd(16)} ${p.title}`)
-        .join("\n");
-    },
-  },
-};
-
-export function dispatch(line) {
-  const [name, ...args] = tokenize(line);
-  const handler = commands[name];
-  if (!handler) return `command not found: ${name}`;
-  return handler.run(args);
-}</pre></div>
-      </div>
-      <div class="container">
-        <div>
+      <div class="container hero-inner">
+        <div class="hero-content">
           <p class="hero-kicker">$ whoami</p>
-          <h1>Melvin Tabitha</h1>
+          <h1>Melvin <em>Tabitha</em></h1>
           <p class="role-line" aria-label="Role">
             <span class="role-tag" id="role-tag">identity</span>
             <span class="role-arrow" aria-hidden="true">▸</span>
@@ -296,50 +95,61 @@ export function dispatch(line) {
             I also help businesses get found, with technical SEO built in from the start.
           </p>
           <div class="hero-actions">
-            <a class="btn" href="#work">Explore my work</a>
+            <a class="btn" href="#work">Explore my work <span class="arrow" aria-hidden="true">→</span></a>
             <a class="btn btn-ghost" href="#cv">View my CV</a>
             <a class="btn btn-ghost" href="#contact">Let’s connect</a>
           </div>
         </div>
 
-        <aside class="fact-card" aria-label="Quick facts">
-          <div class="bar" aria-hidden="true">
-            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            <span class="title">melvin@portfolio: ~</span>
+        <div class="hero-media">
+          <div class="arch">
+            <img src="assets/img/portrait.jpg" alt="Portrait of Melvin Tabitha" width="1254" height="1254" fetchpriority="high">
           </div>
-          <dl>
-            <dt>role</dt><dd>software developer</dd>
-            <dt>backend</dt><dd>django · flask · rest apis</dd>
-            <dt>frontend</dt><dd>react · javascript · css</dd>
-            <dt>data</dt><dd>postgresql · mysql · redis · sqlite</dd>
-            <dt>deploys_to</dt><dd>vercel · render · neon · oracle cloud</dd>
-            <dt>location</dt><dd>Kenya · UTC+3</dd>
-            <dt>live_apps</dt><dd><span class="ok">●</span> 6 in production</dd>
-            <dt>github</dt><dd><a href="https://github.com/MelvinTabitha738" rel="noopener">MelvinTabitha738</a></dd>
-          </dl>
-        </aside>
+          <span class="hero-seal" aria-hidden="true"><span>~</span>/</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Quick facts ================= -->
+    <section class="facts" aria-label="Quick facts">
+      <div class="container">
+        <p class="facts-title" aria-hidden="true">melvin@portfolio: ~</p>
+        <dl class="facts-grid reveal">
+          <div class="fact"><dt>role</dt><dd>software developer</dd></div>
+          <div class="fact"><dt>backend</dt><dd>django · flask · rest apis</dd></div>
+          <div class="fact"><dt>frontend</dt><dd>react · javascript · css</dd></div>
+          <div class="fact"><dt>data</dt><dd>postgresql · mysql · redis · sqlite</dd></div>
+          <div class="fact"><dt>deploys_to</dt><dd>vercel · render · neon · oracle cloud</dd></div>
+          <div class="fact"><dt>location</dt><dd>Kenya · UTC+3</dd></div>
+          <div class="fact"><dt>live_apps</dt><dd><span class="ok">●</span> 6 in production</dd></div>
+          <div class="fact"><dt>github</dt><dd><a href="https://github.com/MelvinTabitha738" rel="noopener">MelvinTabitha738</a></dd></div>
+        </dl>
       </div>
     </section>
 
     <!-- ================= Featured projects ================= -->
     <section class="section" id="work" aria-label="Featured projects">
       <div class="container">
-        <span class="eyebrow">~/projects</span>
-        <h2 class="section-title">Featured work</h2>
-        <p class="section-intro">
-          Real applications, deployed and verifiable. Every project links to its live app
-          and, where available, the source code. The two flagships have full engineering
-          case studies.
-        </p>
+        <header class="section-head reveal">
+          <span class="eyebrow">~/projects</span>
+          <span class="rule" aria-hidden="true"></span>
+          <h2 class="section-title">Featured work</h2>
+          <p class="section-intro">
+            Real applications, deployed and verifiable. Every project links to its live app
+            and, where available, the source code. The two flagships have full engineering
+            case studies.
+          </p>
+        </header>
 
         <!-- Anga Weather -->
         <article class="project-feature reveal">
           <div class="project-media">
             <a href="https://anga-gules.vercel.app/" rel="noopener" aria-label="Open Anga Weather live app">
-              <img src="assets/img/projects/anga-weather.jpg" alt="Anga Weather dashboard showing current conditions and a 7-day forecast for a Kenyan town" width="1440" height="900" fetchpriority="high">
+              <img src="assets/img/projects/anga-weather.jpg" alt="Anga Weather dashboard showing current conditions and a 7-day forecast for a Kenyan town" width="1440" height="900" loading="lazy">
             </a>
           </div>
           <div class="project-body">
+            <span class="project-num" aria-hidden="true">01</span>
             <p class="project-kind">full-stack · django + react · case study</p>
             <h3>Anga — Weather for Kenya</h3>
             <p class="tagline">A weather dashboard engineered to survive a 1,000-requests-per-month API quota.</p>
@@ -383,6 +193,7 @@ export function dispatch(line) {
             </a>
           </div>
           <div class="project-body">
+            <span class="project-num" aria-hidden="true">02</span>
             <p class="project-kind">organisation website</p>
             <h3>CSA Africa Website</h3>
             <p class="tagline">The replacement website for Computer Science Academy Africa, a University of Glasgow outreach programme.</p>
@@ -408,6 +219,7 @@ export function dispatch(line) {
             </a>
           </div>
           <div class="project-body">
+            <span class="project-num" aria-hidden="true">03</span>
             <p class="project-kind">full-stack · ai integration · case study</p>
             <h3>StudyBuddy</h3>
             <p class="tagline">An AI study tool that summarizes only from the student’s own notes, and verifies that it did.</p>
@@ -438,6 +250,7 @@ export function dispatch(line) {
             </a>
           </div>
           <div class="project-body">
+            <span class="project-num" aria-hidden="true">04</span>
             <p class="project-kind">business website · performance + seo</p>
             <h3>Master Photography Kenya</h3>
             <p class="tagline">A studio website with zero third-party requests, generated by a custom Python build tool.</p>
@@ -460,18 +273,21 @@ export function dispatch(line) {
           </div>
         </article>
 
-        <p style="margin-top:36px">
+        <p class="section-cta">
           <a class="btn btn-ghost" href="projects/index.html">View all six projects <span class="arrow">→</span></a>
         </p>
       </div>
     </section>
 
     <!-- ================= Skills ================= -->
-    <section class="section" id="skills" aria-label="Skills">
+    <section class="section section-alt" id="skills" aria-label="Skills">
       <div class="container">
-        <span class="eyebrow">~/skills</span>
-        <h2 class="section-title">What I work with</h2>
-        <p class="section-intro">Everything below is something I actively work with. Most of it is used in the live projects on this site; the rest comes from day-to-day engineering outside the portfolio.</p>
+        <header class="section-head reveal">
+          <span class="eyebrow">~/skills</span>
+          <span class="rule" aria-hidden="true"></span>
+          <h2 class="section-title">What I work with</h2>
+          <p class="section-intro">Everything below is something I actively work with. Most of it is used in the live projects on this site; the rest comes from day-to-day engineering outside the portfolio.</p>
+        </header>
         <div class="skills-grid">
           <div class="skill-group reveal">
             <h3>// languages</h3>
@@ -536,12 +352,16 @@ export function dispatch(line) {
     <!-- ================= Services ================= -->
     <section class="section" id="services" aria-label="Services">
       <div class="container">
-        <span class="eyebrow">~/services</span>
-        <h2 class="section-title">How I can help</h2>
-        <p class="section-intro">For companies hiring developers, and for businesses that need to be built, or found, online.</p>
+        <header class="section-head reveal">
+          <span class="eyebrow">~/services</span>
+          <span class="rule" aria-hidden="true"></span>
+          <h2 class="section-title">How I can help</h2>
+          <p class="section-intro">For companies hiring developers, and for businesses that need to be built, or found, online.</p>
+        </header>
         <div class="services-grid">
           <div class="service reveal">
             <p class="num">01</p>
+            <div class="service-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5"/><path d="m16 7 5 5-5 5"/><path d="m13.5 4-3 16"/></svg></div>
             <h3>Web application development</h3>
             <p>
               Full-stack applications: REST APIs, databases, auth, third-party integrations and
@@ -552,6 +372,7 @@ export function dispatch(line) {
           </div>
           <div class="service reveal">
             <p class="num">02</p>
+            <div class="service-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="16" rx="2"/><path d="M2.5 9h19"/><circle cx="6" cy="6.5" r=".6" fill="currentColor"/><circle cx="8.4" cy="6.5" r=".6" fill="currentColor"/></svg></div>
             <h3>Business websites</h3>
             <p>
               Fast, professional websites for organisations and small businesses, built lean,
@@ -562,6 +383,7 @@ export function dispatch(line) {
           </div>
           <div class="service reveal">
             <p class="num">03</p>
+            <div class="service-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.5-4.5"/><path d="M8 11.5l2 2 4-4.5"/></svg></div>
             <h3>Technical SEO</h3>
             <p>
               Making sure search engines can find, read and rank what you publish: site structure,
@@ -575,36 +397,34 @@ export function dispatch(line) {
     </section>
 
     <!-- ================= About ================= -->
-    <section class="section" id="about" aria-label="About">
+    <section class="section section-alt" id="about" aria-label="About">
       <div class="container">
-        <span class="eyebrow">~/about</span>
-        <h2 class="section-title">About me</h2>
-        <div class="about-grid">
-          <div class="about-copy">
-            <p>
-              I’m a software developer based in Kenya. I build web applications end to end:
-              the API, the data layer, the frontend and the deployment behind them. The parts of
-              engineering most people skip are the ones I enjoy most: <strong>what happens when
-              the quota runs out, the upstream API lies about its headers, or the user is on a
-              slow connection</strong>.
-            </p>
-            <p>
-              My habit is to verify rather than assume. For Anga I probed the provider’s live API
-              and found its documented rate-limit headers didn’t exist. That discovery shaped the
-              whole architecture. For StudyBuddy I didn’t trust the AI’s promises to stay grounded,
-              so the code checks every definition and quiz question against the source notes after
-              generation. If a reading is stale, the interface says so instead of pretending.
-            </p>
-            <p>
-              I’m interested in software development roles, internships and freelance work:
-              building products for companies, and websites and SEO for businesses that need to be
-              found. If that sounds like something you’re working on, <a href="#contact">get in
-              touch</a>.
-            </p>
-          </div>
-          <div class="portrait-frame">
-            <img src="assets/img/portrait.jpg" alt="Portrait of Melvin Tabitha" width="1254" height="1254" loading="lazy">
-          </div>
+        <header class="section-head reveal">
+          <span class="eyebrow">~/about</span>
+          <span class="rule" aria-hidden="true"></span>
+          <h2 class="section-title">About me</h2>
+        </header>
+        <div class="about-copy reveal">
+          <p>
+            I’m a software developer based in Kenya. I build web applications end to end:
+            the API, the data layer, the frontend and the deployment behind them. The parts of
+            engineering most people skip are the ones I enjoy most: <strong>what happens when
+            the quota runs out, the upstream API lies about its headers, or the user is on a
+            slow connection</strong>.
+          </p>
+          <p>
+            My habit is to verify rather than assume. For Anga I probed the provider’s live API
+            and found its documented rate-limit headers didn’t exist. That discovery shaped the
+            whole architecture. For StudyBuddy I didn’t trust the AI’s promises to stay grounded,
+            so the code checks every definition and quiz question against the source notes after
+            generation. If a reading is stale, the interface says so instead of pretending.
+          </p>
+          <p>
+            I’m interested in software development roles, internships and freelance work:
+            building products for companies, and websites and SEO for businesses that need to be
+            found. If that sounds like something you’re working on, <a href="#contact">get in
+            touch</a>.
+          </p>
         </div>
       </div>
     </section>
@@ -612,16 +432,19 @@ export function dispatch(line) {
     <!-- ================= CV & Resume ================= -->
     <section class="section" id="cv" aria-label="CV and resume">
       <div class="container">
-        <span class="eyebrow">~/cv</span>
-        <h2 class="section-title">CV &amp; resume</h2>
-        <p class="section-intro">I keep two versions. Open whichever fits what you need.</p>
+        <header class="section-head reveal">
+          <span class="eyebrow">~/cv</span>
+          <span class="rule" aria-hidden="true"></span>
+          <h2 class="section-title">CV &amp; resume</h2>
+          <p class="section-intro">I keep two versions. Open whichever fits what you need.</p>
+        </header>
         <div class="cv-choices">
-          <article class="cv-choice">
+          <article class="cv-choice reveal">
             <h3>CV</h3>
             <p>The full picture. Work, projects with technical depth, skills, education.</p>
             <a class="btn" href="cv/index.html?doc=cv">Open my CV</a>
           </article>
-          <article class="cv-choice">
+          <article class="cv-choice reveal">
             <h3>Resume</h3>
             <p>The short version. Built for a quick scan.</p>
             <a class="btn btn-ghost" href="cv/index.html?doc=resume">Open my resume</a>
@@ -651,10 +474,13 @@ export function dispatch(line) {
     ================================================== -->
 
     <!-- ================= Contact ================= -->
-    <section class="section" id="contact" aria-label="Contact">
+    <section class="section section-band" id="contact" aria-label="Contact">
       <div class="container">
-        <span class="eyebrow">~/contact</span>
-        <h2 class="section-title">Let’s build something</h2>
+        <header class="section-head reveal">
+          <span class="eyebrow">~/contact</span>
+          <span class="rule" aria-hidden="true"></span>
+          <h2 class="section-title">Let’s build something</h2>
+        </header>
         <div class="contact-grid">
           <div>
             <p class="section-intro" style="margin-bottom:0">
@@ -720,7 +546,7 @@ export function dispatch(line) {
     </div>
   </footer>
 
-  <script src="js/main.js?v=12" defer></script>
-  <script src="js/terminal.js?v=12" defer></script>
+  <script src="js/main.js?v=13" defer></script>
+  <script src="js/terminal.js?v=13" defer></script>
 </body>
 </html>

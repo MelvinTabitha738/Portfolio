@@ -382,7 +382,7 @@
       summary: "switch between dark and light mode",
       run: function (args) {
         var html = document.documentElement;
-        var current = html.getAttribute("data-theme") === "light" ? "light" : "dark";
+        var current = html.getAttribute("data-theme") === "dark" ? "dark" : "light";
         var target = (args && args[0]) ? args[0].toLowerCase() : "";
         var next;
         if (target === "light" || target === "dark") next = target;
@@ -391,7 +391,7 @@
         html.setAttribute("data-theme", next);
         try { localStorage.setItem("melvin.theme", next); } catch (e) {}
         var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute("content", next === "light" ? "#f8f7f4" : "#0b0e13");
+        if (meta) meta.setAttribute("content", next === "light" ? "#fcf8f5" : "#1a1215");
         var btn = document.querySelector(".theme-toggle");
         if (btn) {
           var isLight = next === "light";

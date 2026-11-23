@@ -15,9 +15,9 @@ Live site: https://melvintabitha.vercel.app/
 
 ## Features
 
-- **Light and dark themes.** Dark by default. The chosen theme is applied before paint (so no flash) and stored in `localStorage`.
+- **Light and dark themes.** Light by default. The chosen theme is applied before paint (so no flash) and stored in `localStorage`.
 - **Responsive layout.** Mobile nav drawer at narrow widths. Grids reflow down to 320px without horizontal overflow.
-- **Software-themed background.** A subtle code-rain effect in the hero that fades out behind the content and hides on small screens.
+- **Editorial design.** Ivory and blush grounds, plum and amber accents, Playfair Display headings over DM Sans (all fonts self-hosted), an arched hero portrait and scroll-reveal motion.
 - **Procedural keyboard-click sound.** Plays only while you type in the terminal, one click per key, generated with the Web Audio API. No audio files loaded.
 - **Accessible defaults.** Skip-link, semantic landmarks, visible focus states, ARIA on interactive controls, `prefers-reduced-motion` respected for animations.
 
@@ -38,7 +38,7 @@ Live site: https://melvintabitha.vercel.app/
 ├── css/
 │   └── main.css            # Single stylesheet
 ├── js/
-│   ├── main.js             # Theme toggle, nav, code-rain
+│   ├── main.js             # Theme toggle, nav, scroll reveal
 │   ├── terminal.js         # Terminal panel behaviour, key-click sound
 │   └── cv-viewer.js        # Renders the CV/resume pages (PDF.js)
 ├── projects/
@@ -86,7 +86,7 @@ Any static host (GitHub Pages, Netlify, Cloudflare Pages) will work equally well
 
 ## Browser support
 
-Tested on current Chrome, Firefox, Safari and Edge. Degrades gracefully on older browsers: themes, layout and content work without JavaScript; the code-rain and sound engine are progressive enhancements.
+Tested on current Chrome, Firefox, Safari and Edge. Degrades gracefully on older browsers: themes, layout and content work without JavaScript; the reveal animations and sound engine are progressive enhancements.
 
 ## Contact
 

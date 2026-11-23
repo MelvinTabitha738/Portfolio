@@ -6,24 +6,20 @@
   <title>Page not found — Melvin Tabitha</title>
   <meta name="description" content="That page doesn't exist. Head back to Melvin Tabitha's portfolio.">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#0b0e13">
+  <meta name="theme-color" content="#fcf8f5">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="stylesheet" href="css/main.css?v=16">
+  <link rel="stylesheet" href="css/main.css?v=18">
   <script>document.documentElement.classList.replace("no-js","js");</script>
   <script>
     (function () {
-      var theme = "dark";
+      var theme = "light";
       try {
         var saved = localStorage.getItem("melvin.theme");
-        theme = saved || (
-          window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches
-            ? "light"
-            : "dark"
-        );
+        if (saved === "dark" || saved === "light") theme = saved;
       } catch (e) {}
       document.documentElement.setAttribute("data-theme", theme);
       var m = document.querySelector('meta[name="theme-color"]');
-      if (m) m.setAttribute("content", theme === "light" ? "#f8f7f4" : "#0b0e13");
+      if (m) m.setAttribute("content", theme === "dark" ? "#1a1215" : "#fcf8f5");
     })();
   </script>
 </head>
@@ -33,7 +29,7 @@
   <header class="site-header">
     <div class="container">
       <a class="wordmark" href="index.html"><span class="tilde">~/</span>melvin-tabitha</a>
-      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light mode" title="Switch to light mode">
+      <button class="theme-toggle" type="button" aria-pressed="true" aria-label="Switch to dark mode" title="Switch to dark mode">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
@@ -71,7 +67,7 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=12" defer></script>
-  <script src="js/terminal.js?v=12" defer></script>
+  <script src="js/main.js?v=13" defer></script>
+  <script src="js/terminal.js?v=13" defer></script>
 </body>
 </html>

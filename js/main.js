@@ -231,12 +231,12 @@
 
   /* ---- Theme toggle ----------------------------------------------------------
      The actual theme is applied before paint by a tiny inline script in each
-     page's <head> (reads localStorage, falls back to prefers-color-scheme).
+     page's <head> (reads localStorage, falls back to light).
      This handler just toggles and persists the choice. */
   var themeBtn = document.querySelector(".theme-toggle");
   if (themeBtn) {
     function syncLabel() {
-      var isLight = document.documentElement.getAttribute("data-theme") === "light";
+      var isLight = document.documentElement.getAttribute("data-theme") !== "dark";
       themeBtn.setAttribute("aria-pressed", String(isLight));
       themeBtn.setAttribute(
         "aria-label",
@@ -245,29 +245,18 @@
       themeBtn.setAttribute("title", isLight ? "Switch to dark mode" : "Switch to light mode");
       // Keep the browser-chrome colour (theme-color meta) in step with the UI.
       var meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute("content", isLight ? "#f8f7f4" : "#0b0e13");
+      if (meta) meta.setAttribute("content", isLight ? "#fcf8f5" : "#1a1215");
     }
     syncLabel();
     themeBtn.addEventListener("click", function () {
       var next =
-        document.documentElement.getAttribute("data-theme") === "light"
-          ? "dark"
-          : "light";
+        document.documentElement.getAttribute("data-theme") === "dark"
+          ? "light"
+          : "dark";
       document.documentElement.setAttribute("data-theme", next);
       try { localStorage.setItem("melvin.theme", next); } catch (e) {}
       syncLabel();
     });
-    // If the visitor hasn't picked a theme yet, follow their OS preference changes.
-    var mql = window.matchMedia("(prefers-color-scheme: light)");
-    var onPref = function (e) {
-      var stored = null;
-      try { stored = localStorage.getItem("melvin.theme"); } catch (_) {}
-      if (stored) return;
-      document.documentElement.setAttribute("data-theme", e.matches ? "light" : "dark");
-      syncLabel();
-    };
-    if (mql.addEventListener) mql.addEventListener("change", onPref);
-    else if (mql.addListener) mql.addListener(onPref);
   }
 
   /* ---- Footer year ------------------------------------------------------------ */
